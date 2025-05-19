@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de Formulario HTML5</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        fieldset {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        legend {
+            font-weight: bold;
+            padding: 0 10px;
+            color: #3498db;
+        }
+        
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+            margin-bottom: 10px;
+        }
+        
+        input[type="checkbox"], 
+        input[type="radio"] {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .radio-group, 
+        .checkbox-group {
+            margin: 10px 0;
+        }
+        
+        .inline-label {
+            display: inline-flex;
+            align-items: center;
+            margin: 5px 20px 5px 0;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .form-hint {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            margin-top: -8px;
+            margin-bottom: 10px;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85em;
+            margin-top: -8px;
+            margin-bottom: 10px;
+            display: none;
+        }
+        
+        input:invalid:not(:focus):not(:placeholder-shown) ~ .error-message {
+            display: block;
+        }
+        
+        input:invalid:not(:focus):not(:placeholder-shown) {
+            border-color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Formulario de Registro - Curso Web</h1>
+        <p>Complete el siguiente formulario para inscribirse en nuestros cursos en línea.</p>
+    </header>
+    
+    <main>
+        <form id="registro" action="/procesar-registro" method="post" novalidate>
+            <fieldset>
+                <legend>Información Personal</legend>
+                
+                <div>
+                    <label for="nombre" class="required">Nombre completo</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej. Juan Pérez" required autocomplete="name">
+                    <div class="error-message">Por favor ingrese su nombre completo</div>
+                </div>
+                
+                <div>
+                    <label for="email" class="required">Correo electrónico</label>
+                    <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required autocomplete="email">
+                    <div class="error-message">Por favor ingrese un correo electrónico válido</div>
+                </div>
+                
+                <div>
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" placeholder="Ej. 8888-1234" pattern="[0-9]{4}-[0-9]{4}" autocomplete="tel">
+                    <p class="form-hint">Formato: XXXX-XXXX</p>
+                </div>
+                
+                <div>
+                    <label for="fecha-nacimiento">Fecha de nacimiento</label>
+                    <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" autocomplete="bday">
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Información del Curso</legend>
+                
+                <div>
+                    <label for="curso" class="required">Seleccione un curso</label>
+                    <select id="curso" name="curso" required>
+                        <option value="" selected disabled>-- Seleccione un curso --</option>
+                        <optgroup label="Desarrollo Web">
+                            <option value="html-css">HTML y CSS Básico</option>
+                            <option value="javascript">JavaScript Fundamental</option>
+                            <option value="react">React JS</option>
+                        </optgroup>
+                        <optgroup label="Diseño">
+                            <option value="ui-design">Diseño de Interfaces</option>
+                            <option value="ux-design">Experiencia de Usuario</option>
+                        </optgroup>
+                    </select>
+                </div>
+                
+                <div>
+                    <label>Nivel de experiencia</label>
+                    <div class="radio-group">
+                        <label class="inline-label">
+                            <input type="radio" name="nivel" value="principiante" checked> 
+                            Principiante
+                        </label>
+                        <label class="inline-label">
+                            <input type="radio" name="nivel" value="intermedio"> 
+                            Intermedio
+                        </label>
+                        <label class="inline-label">
+                            <input type="radio" name="nivel" value="avanzado"> 
+                            Avanzado
+                        </label>
+                    </div>
+                </div>
+                
+                <div>
+                    <label>¿Qué temas le interesan?</label>
+                    <div class="checkbox-group">
+                        <label class="inline-label">
+                            <input type="checkbox" name="intereses" value="front-end"> 
+                            Front-end
+                        </label>
+                        <label class="inline-label">
+                            <input type="checkbox" name="intereses" value="back-end"> 
+                            Back-end
+                        </label>
+                        <label class="inline-label">
+                            <input type="checkbox" name="intereses" value="diseño"> 
+                            Diseño UI/UX
+                        </label>
+                        <label class="inline-label">
+                            <input type="checkbox" name="intereses" value="bases-datos"> 
+                            Bases de datos
+                        </label>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="horario">Horario preferido</label>
+                    <select id="horario" name="horario">
+                        <option value="manana">Mañana (8:00 AM - 12:00 PM)</option>
+                        <option value="tarde">Tarde (1:00 PM - 5:00 PM)</option>
+                        <option value="noche">Noche (6:00 PM - 9:00 PM)</option>
+                    </select>
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Información Adicional</legend>
+                
+                <div>
+                    <label for="comentarios">¿Por qué desea tomar este curso?</label>
+                    <textarea id="comentarios" name="comentarios" rows="4" placeholder="Cuéntenos más sobre sus objetivos e intereses..."></textarea>
+                </div>
+                
+                <div>
+                    <label for="como-encontro">¿Cómo nos encontró?</label>
+                    <select id="como-encontro" name="como-encontro">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="busqueda">Búsqueda en internet</option>
+                        <option value="redes">Redes sociales</option>
+                        <option value="amigo">Recomendación de un amigo</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                
+                <div class="checkbox-group">
+                    <label class="inline-label">
+                        <input type="checkbox" name="newsletter" value="si" checked> 
+                        Deseo recibir información sobre cursos y eventos
+                    </label>
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Términos y Condiciones</legend>
+                
+                <div class="checkbox-group">
+                    <label class="inline-label">
+                        <input type="checkbox" name="terminos" required> 
+                        <span class="required">Acepto los <a href="#" target="_blank">términos y condiciones</a></span>
+                    </label>
+                </div>
+            </fieldset>
+            
+            <div>
+                <button type="submit">Enviar Formulario</button>
+                <button type="reset" style="background-color: #95a5a6;">Limpiar</button>
+            </div>
+        </form>
+    </main>
+    
+    <!-- Script para validación personalizada del formulario -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registro');
+            
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    alert('Por favor, revise el formulario y complete todos los campos requeridos.');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
