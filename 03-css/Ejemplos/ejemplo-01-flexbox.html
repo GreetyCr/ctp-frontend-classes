@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de Flexbox</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f9fc;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            margin-bottom: 20px;
+        }
+
+        .box {
+            padding: 20px;
+            border-radius: 4px;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Colores para los boxes */
+        .box:nth-child(1) { background-color: #3498db; }
+        .box:nth-child(2) { background-color: #9b59b6; }
+        .box:nth-child(3) { background-color: #2ecc71; }
+        .box:nth-child(4) { background-color: #e74c3c; }
+        .box:nth-child(5) { background-color: #f39c12; }
+        .box:nth-child(6) { background-color: #1abc9c; }
+
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            color: #e74c3c;
+        }
+
+        /* Estilos específicos para Flexbox */
+
+        /* 1. Contenedor Flex Básico */
+        .flex-container {
+            display: flex;
+            margin-bottom: 20px;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .flex-container .box {
+            margin: 5px;
+            flex-basis: 100px;
+        }
+
+        /* 2. Propiedades de dirección */
+        .flex-row {
+            flex-direction: row; /* Valor por defecto */
+        }
+
+        .flex-row-reverse {
+            flex-direction: row-reverse;
+        }
+
+        .flex-column {
+            flex-direction: column;
+        }
+
+        .flex-column-reverse {
+            flex-direction: column-reverse;
+        }
+
+        /* 3. Propiedades de justificación y alineación */
+        .justify-start {
+            justify-content: flex-start; /* Valor por defecto */
+        }
+
+        .justify-end {
+            justify-content: flex-end;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .justify-around {
+            justify-content: space-around;
+        }
+
+        .justify-evenly {
+            justify-content: space-evenly;
+        }
+
+        .align-start {
+            align-items: flex-start;
+        }
+
+        .align-end {
+            align-items: flex-end;
+        }
+
+        .align-center {
+            align-items: center;
+        }
+
+        .align-stretch {
+            align-items: stretch;
+        }
+
+        .align-baseline {
+            align-items: baseline;
+        }
+
+        /* 4. Wrap */
+        .flex-nowrap {
+            flex-wrap: nowrap; /* Valor por defecto */
+        }
+
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+
+        .flex-wrap-reverse {
+            flex-wrap: wrap-reverse;
+        }
+
+        /* 5. Propiedades de crecimiento y reducción */
+        .box-grow {
+            flex-grow: 1;
+        }
+
+        .box-grow-2 {
+            flex-grow: 2;
+        }
+
+        .box-shrink {
+            flex-shrink: 1;
+        }
+
+        .box-shrink-0 {
+            flex-shrink: 0;
+            width: 200px;
+        }
+
+        /* 6. Ejemplos prácticos */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2c3e50;
+            padding: 10px 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .navbar .logo {
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .navbar .menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar .menu li {
+            margin-left: 15px;
+        }
+
+        .navbar .menu a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            flex: 1 1 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-image {
+            height: 150px;
+            background-color: #3498db;
+        }
+
+        .card-content {
+            padding: 15px;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button {
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Estilos para mostrar código base */
+        .baseline-demo {
+            display: flex;
+            align-items: baseline;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .baseline-demo div {
+            margin: 5px;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+        }
+
+        .text-small { font-size: 12px; }
+        .text-medium { font-size: 18px; }
+        .text-large { font-size: 24px; }
+
+        /* Clase para altura específica en demo de align-items */
+        .container-height {
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Guía Completa de Flexbox</h1>
+
+    <div class="section">
+        <h2>¿Qué es Flexbox?</h2>
+        <p>
+            Flexbox (Flexible Box Layout) es un modelo de diseño unidimensional que permite distribuir espacio y alinear elementos
+            en una interfaz. Es especialmente útil para componentes de aplicaciones y estructuras de pequeña escala.
+        </p>
+        <p>
+            La idea principal detrás de Flexbox es dar al contenedor la habilidad de alterar la anchura/altura y el orden de sus
+            elementos para ocupar mejor el espacio disponible.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>1. Contenedor Flex Básico</h2>
+        <p>Para empezar a usar Flexbox, definimos un elemento como contenedor flex:</p>
+        <pre><code>.flex-container {
+    display: flex;
+}</code></pre>
+
+        <div class="container">
+            <h3>Ejemplo de Contenedor Flex:</h3>
+            <div class="flex-container">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>2. Dirección de Flexbox</h2>
+        <p>La propiedad <code>flex-direction</code> establece cómo se colocan los elementos en el contenedor flex:</p>
+        
+        <div class="container">
+            <h3>row (por defecto):</h3>
+            <pre><code>flex-direction: row;</code></pre>
+            <div class="flex-container flex-row">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>row-reverse:</h3>
+            <pre><code>flex-direction: row-reverse;</code></pre>
+            <div class="flex-container flex-row-reverse">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>column:</h3>
+            <pre><code>flex-direction: column;</code></pre>
+            <div class="flex-container flex-column">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>column-reverse:</h3>
+            <pre><code>flex-direction: column-reverse;</code></pre>
+            <div class="flex-container flex-column-reverse">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>3. Justificación y Alineación</h2>
+        
+        <h3>justify-content (alineación horizontal)</h3>
+        <p>Controla la alineación de los elementos a lo largo del eje principal (horizontal por defecto):</p>
+
+        <div class="container">
+            <h3>flex-start (por defecto):</h3>
+            <pre><code>justify-content: flex-start;</code></pre>
+            <div class="flex-container justify-start">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>flex-end:</h3>
+            <pre><code>justify-content: flex-end;</code></pre>
+            <div class="flex-container justify-end">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>center:</h3>
+            <pre><code>justify-content: center;</code></pre>
+            <div class="flex-container justify-center">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>space-between:</h3>
+            <pre><code>justify-content: space-between;</code></pre>
+            <div class="flex-container justify-between">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>space-around:</h3>
+            <pre><code>justify-content: space-around;</code></pre>
+            <div class="flex-container justify-around">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>space-evenly:</h3>
+            <pre><code>justify-content: space-evenly;</code></pre>
+            <div class="flex-container justify-evenly">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+
+        <h3>align-items (alineación vertical)</h3>
+        <p>Controla la alineación de los elementos a lo largo del eje cruzado (vertical por defecto):</p>
+
+        <div class="container">
+            <h3>flex-start:</h3>
+            <pre><code>align-items: flex-start;</code></pre>
+            <div class="flex-container align-start container-height">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>flex-end:</h3>
+            <pre><code>align-items: flex-end;</code></pre>
+            <div class="flex-container align-end container-height">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>center:</h3>
+            <pre><code>align-items: center;</code></pre>
+            <div class="flex-container align-center container-height">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>stretch (por defecto):</h3>
+            <pre><code>align-items: stretch;</code></pre>
+            <div class="flex-container align-stretch container-height">
+                <div class="box" style="height: auto;">1</div>
+                <div class="box" style="height: auto;">2</div>
+                <div class="box" style="height: auto;">3</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>baseline:</h3>
+            <pre><code>align-items: baseline;</code></pre>
+            <p>Alinea los elementos según la línea base del texto:</p>
+            <div class="baseline-demo">
+                <div class="text-small">Pequeño</div>
+                <div class="text-medium">Mediano</div>
+                <div class="text-large">Grande</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>4. Wrap (Envoltura)</h2>
+        <p>La propiedad <code>flex-wrap</code> controla si los elementos deben envolverse o no:</p>
+
+        <div class="container">
+            <h3>nowrap (por defecto):</h3>
+            <pre><code>flex-wrap: nowrap;</code></pre>
+            <div class="flex-container flex-nowrap">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+                <div class="box">4</div>
+                <div class="box">5</div>
+                <div class="box">6</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>wrap:</h3>
+            <pre><code>flex-wrap: wrap;</code></pre>
+            <div class="flex-container flex-wrap">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+                <div class="box">4</div>
+                <div class="box">5</div>
+                <div class="box">6</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>wrap-reverse:</h3>
+            <pre><code>flex-wrap: wrap-reverse;</code></pre>
+            <div class="flex-container flex-wrap-reverse">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+                <div class="box">4</div>
+                <div class="box">5</div>
+                <div class="box">6</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>5. Propiedades de Crecimiento y Reducción</h2>
+        <p>Las propiedades <code>flex-grow</code>, <code>flex-shrink</code> y <code>flex-basis</code> controlan cómo los elementos crecen y se reducen:</p>
+
+        <div class="container">
+            <h3>flex-grow:</h3>
+            <p>Determina cuánto puede crecer un elemento si es necesario:</p>
+            <pre><code>flex-grow: 1; /* El elemento crecerá */
+flex-grow: 2; /* Crecerá el doble que otros con flex-grow: 1 */</code></pre>
+            <div class="flex-container">
+                <div class="box">Normal</div>
+                <div class="box box-grow">flex-grow: 1</div>
+                <div class="box box-grow-2">flex-grow: 2</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>flex-shrink:</h3>
+            <p>Determina cuánto puede reducirse un elemento si es necesario:</p>
+            <pre><code>flex-shrink: 1; /* Valor por defecto, el elemento puede reducirse */
+flex-shrink: 0; /* El elemento no se reducirá */</code></pre>
+            <div class="flex-container" style="width: 100%;">
+                <div class="box box-shrink-0">flex-shrink: 0 (No se reduce)</div>
+                <div class="box box-shrink">flex-shrink: 1</div>
+                <div class="box box-shrink">flex-shrink: 1</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>6. Ejemplos Prácticos</h2>
+        
+        <h3>Barra de Navegación</h3>
+        <p>Una barra de navegación con el logo a la izquierda y los elementos del menú a la derecha:</p>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">Mi Sitio</div>
+                <ul class="menu">
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Servicios</a></li>
+                    <li><a href="#">Productos</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <h3>Tarjetas (Cards)</h3>
+        <p>Una disposición de tarjetas que se adapta a diferentes tamaños de pantalla:</p>
+        <div class="container">
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-image"></div>
+                    <div class="card-content">
+                        <h3>Título de la Tarjeta 1</h3>
+                        <p>Esta es una descripción breve del contenido de la tarjeta.</p>
+                    </div>
+                    <div class="card-footer">
+                        <span>12 Sep 2023</span>
+                        <button class="button">Ver más</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image"></div>
+                    <div class="card-content">
+                        <h3>Título de la Tarjeta 2</h3>
+                        <p>Esta es una descripción breve del contenido de la tarjeta.</p>
+                    </div>
+                    <div class="card-footer">
+                        <span>10 Sep 2023</span>
+                        <button class="button">Ver más</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image"></div>
+                    <div class="card-content">
+                        <h3>Título de la Tarjeta 3</h3>
+                        <p>Esta es una descripción breve del contenido de la tarjeta.</p>
+                    </div>
+                    <div class="card-footer">
+                        <span>8 Sep 2023</span>
+                        <button class="button">Ver más</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Conclusión</h2>
+        <p>
+            Flexbox es una herramienta poderosa para crear diseños flexibles y responsivos. Es especialmente útil para:
+        </p>
+        <ul>
+            <li>Alineación vertical y horizontal de elementos</li>
+            <li>Distribución de espacio entre elementos</li>
+            <li>Ordenamiento de elementos independientemente del orden en el HTML</li>
+            <li>Diseños que deben adaptarse a diferentes tamaños de pantalla</li>
+        </ul>
+        <p>
+            Para diseños más complejos en dos dimensiones (filas y columnas simultáneamente), considera usar CSS Grid.
+        </p>
+    </div>
+</body>
+</html> 
