@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo Básico de JavaScript</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+        .output {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .success {
+            color: #27ae60;
+        }
+        .error {
+            color: #c0392b;
+        }
+        .warning {
+            color: #f39c12;
+        }
+        .info {
+            color: #2980b9;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .input-group {
+            margin: 15px 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input {
+            padding: 8px;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fundamentos de JavaScript</h1>
+    
+    <h2>1. Variables y Tipos de Datos</h2>
+    <button class="btn" onclick="mostrarVariables()">Ver Variables</button>
+    <div id="variables-output" class="output"></div>
+    
+    <h2>2. Operaciones Matemáticas</h2>
+    <div class="input-group">
+        <label for="num1">Número 1:</label>
+        <input type="number" id="num1" value="10">
+    </div>
+    <div class="input-group">
+        <label for="num2">Número 2:</label>
+        <input type="number" id="num2" value="5">
+    </div>
+    <button class="btn" onclick="calcular()">Calcular</button>
+    <div id="operaciones-output" class="output"></div>
+    
+    <h2>3. Manipulación de Strings</h2>
+    <div class="input-group">
+        <label for="texto">Texto:</label>
+        <input type="text" id="texto" value="JavaScript es divertido">
+    </div>
+    <button class="btn" onclick="manipularTexto()">Manipular Texto</button>
+    <div id="texto-output" class="output"></div>
+    
+    <h2>4. Arrays y Objetos</h2>
+    <button class="btn" onclick="mostrarArrays()">Ver Arrays</button>
+    <div id="arrays-output" class="output"></div>
+    
+    <button class="btn" onclick="mostrarObjetos()">Ver Objetos</button>
+    <div id="objetos-output" class="output"></div>
+    
+    <h2>5. Condicionales</h2>
+    <div class="input-group">
+        <label for="edad">Introduce tu edad:</label>
+        <input type="number" id="edad" min="0" max="120" value="18">
+    </div>
+    <button class="btn" onclick="verificarEdad()">Verificar Edad</button>
+    <div id="condicionales-output" class="output"></div>
+    
+    <h2>6. Bucles</h2>
+    <div class="input-group">
+        <label for="repeticiones">Número de repeticiones:</label>
+        <input type="number" id="repeticiones" min="1" max="20" value="5">
+    </div>
+    <button class="btn" onclick="ejecutarBucles()">Ejecutar Bucles</button>
+    <div id="bucles-output" class="output"></div>
+    
+    <script>
+        // Función para mostrar contenido en un elemento output
+        function mostrarEnOutput(elementId, contenido, tipo = "") {
+            const output = document.getElementById(elementId);
+            output.textContent = contenido;
+            
+            // Limpiar clases anteriores
+            output.classList.remove("success", "error", "warning", "info");
+            
+            // Añadir clase si se especifica
+            if (tipo) {
+                output.classList.add(tipo);
+            }
+        }
+        
+        // 1. Variables y Tipos de Datos
+        function mostrarVariables() {
+            // Diferentes tipos de variables
+            let nombre = "María";
+            const PI = 3.14159;
+            let edad = 25;
+            let esMayorDeEdad = true;
+            let hobbies = ["leer", "correr", "programar"];
+            let persona = {
+                nombre: "Juan",
+                edad: 30,
+                profesion: "desarrollador"
+            };
+            let fechaActual = new Date();
+            let sinValor = null;
+            let noDefinido;
+            
+            // Crear salida formateada
+            let salida = "// Tipos de variables en JavaScript\n\n";
+            
+            salida += `let nombre = "${nombre}";\n`;
+            salida += `typeof nombre: ${typeof nombre}\n\n`;
+            
+            salida += `const PI = ${PI};\n`;
+            salida += `typeof PI: ${typeof PI}\n\n`;
+            
+            salida += `let edad = ${edad};\n`;
+            salida += `typeof edad: ${typeof edad}\n\n`;
+            
+            salida += `let esMayorDeEdad = ${esMayorDeEdad};\n`;
+            salida += `typeof esMayorDeEdad: ${typeof esMayorDeEdad}\n\n`;
+            
+            salida += `let hobbies = ${JSON.stringify(hobbies)};\n`;
+            salida += `typeof hobbies: ${typeof hobbies}\n`;
+            salida += `Array.isArray(hobbies): ${Array.isArray(hobbies)}\n\n`;
+            
+            salida += `let persona = ${JSON.stringify(persona, null, 2)};\n`;
+            salida += `typeof persona: ${typeof persona}\n\n`;
+            
+            salida += `let fechaActual = ${fechaActual};\n`;
+            salida += `typeof fechaActual: ${typeof fechaActual}\n\n`;
+            
+            salida += `let sinValor = ${sinValor};\n`;
+            salida += `typeof sinValor: ${typeof sinValor}\n\n`;
+            
+            salida += `let noDefinido;\n`;
+            salida += `typeof noDefinido: ${typeof noDefinido}\n`;
+            
+            mostrarEnOutput("variables-output", salida, "info");
+        }
+        
+        // 2. Operaciones Matemáticas
+        function calcular() {
+            // Obtener los valores de los inputs
+            const num1 = parseFloat(document.getElementById("num1").value);
+            const num2 = parseFloat(document.getElementById("num2").value);
+            
+            // Verificar que sean números válidos
+            if (isNaN(num1) || isNaN(num2)) {
+                mostrarEnOutput("operaciones-output", "Por favor, introduce números válidos.", "error");
+                return;
+            }
+            
+            // Realizar operaciones
+            const suma = num1 + num2;
+            const resta = num1 - num2;
+            const multiplicacion = num1 * num2;
+            const division = num1 / num2;
+            const modulo = num1 % num2;
+            const potencia = num1 ** num2;
+            
+            // Crear salida formateada
+            let salida = `// Operaciones con ${num1} y ${num2}\n\n`;
+            
+            salida += `Suma: ${num1} + ${num2} = ${suma}\n`;
+            salida += `Resta: ${num1} - ${num2} = ${resta}\n`;
+            salida += `Multiplicación: ${num1} * ${num2} = ${multiplicacion}\n`;
+            salida += `División: ${num1} / ${num2} = ${division}\n`;
+            salida += `Módulo (resto): ${num1} % ${num2} = ${modulo}\n`;
+            salida += `Potencia: ${num1} ** ${num2} = ${potencia}\n\n`;
+            
+            // Operaciones con Math
+            salida += `// Operaciones con Math\n\n`;
+            salida += `Valor absoluto de -${num1}: Math.abs(-${num1}) = ${Math.abs(-num1)}\n`;
+            salida += `Redondeo hacia abajo de ${division}: Math.floor(${division}) = ${Math.floor(division)}\n`;
+            salida += `Redondeo hacia arriba de ${division}: Math.ceil(${division}) = ${Math.ceil(division)}\n`;
+            salida += `Redondeo al entero más cercano de ${division}: Math.round(${division}) = ${Math.round(division)}\n`;
+            salida += `Raíz cuadrada de ${num1}: Math.sqrt(${num1}) = ${Math.sqrt(num1)}\n`;
+            salida += `Máximo entre ${num1} y ${num2}: Math.max(${num1}, ${num2}) = ${Math.max(num1, num2)}\n`;
+            salida += `Mínimo entre ${num1} y ${num2}: Math.min(${num1}, ${num2}) = ${Math.min(num1, num2)}\n`;
+            
+            mostrarEnOutput("operaciones-output", salida, "success");
+        }
+        
+        // 3. Manipulación de Strings
+        function manipularTexto() {
+            const texto = document.getElementById("texto").value;
+            
+            if (!texto) {
+                mostrarEnOutput("texto-output", "Por favor, introduce un texto.", "error");
+                return;
+            }
+            
+            // Manipulaciones de texto
+            const longitud = texto.length;
+            const mayusculas = texto.toUpperCase();
+            const minusculas = texto.toLowerCase();
+            const primerCaracter = texto.charAt(0);
+            const ultimoCaracter = texto.charAt(texto.length - 1);
+            const posicionEs = texto.indexOf("es");
+            const contieneDivertido = texto.includes("divertido");
+            const reemplazo = texto.replace("divertido", "increíble");
+            const palabras = texto.split(" ");
+            const recorte = texto.substring(0, 10) + (texto.length > 10 ? "..." : "");
+            
+            // Crear salida formateada
+            let salida = `// Manipulación del texto: "${texto}"\n\n`;
+            
+            salida += `Longitud: ${longitud} caracteres\n`;
+            salida += `Mayúsculas: "${mayusculas}"\n`;
+            salida += `Minúsculas: "${minusculas}"\n`;
+            salida += `Primer carácter: "${primerCaracter}"\n`;
+            salida += `Último carácter: "${ultimoCaracter}"\n`;
+            
+            if (posicionEs !== -1) {
+                salida += `Posición de "es": ${posicionEs}\n`;
+            } else {
+                salida += `El texto no contiene "es"\n`;
+            }
+            
+            salida += `Contiene "divertido": ${contieneDivertido}\n`;
+            salida += `Reemplazo: "${reemplazo}"\n`;
+            salida += `Palabras: ${JSON.stringify(palabras)} (${palabras.length} palabras)\n`;
+            salida += `Recorte a 10 caracteres: "${recorte}"\n\n`;
+            
+            // Template literals
+            salida += `// Template literals\n\n`;
+            salida += `Texto original invertido: "${texto.split('').reverse().join('')}"\n`;
+            salida += `Con prefijo y sufijo: "¡${texto}!"\n`;
+            
+            mostrarEnOutput("texto-output", salida, "info");
+        }
+        
+        // 4. Arrays
+        function mostrarArrays() {
+            // Crear y manipular arrays
+            let frutas = ["manzana", "naranja", "plátano", "fresa"];
+            
+            // Operaciones con arrays
+            frutas.push("uva"); // Añadir al final
+            frutas.unshift("kiwi"); // Añadir al inicio
+            
+            const ultimaFruta = frutas.pop(); // Eliminar y obtener el último
+            const primeraFruta = frutas.shift(); // Eliminar y obtener el primero
+            
+            const frutasBuscadas = frutas.slice(1, 3); // Subarray
+            const posicionNaranja = frutas.indexOf("naranja");
+            const contienePlatano = frutas.includes("plátano");
+            
+            // Crear otro array y unirlo
+            const masFrutas = ["sandía", "melón"];
+            const todasLasFrutas = frutas.concat(masFrutas);
+            
+            // Usar métodos de array funcionales
+            const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            const pares = numeros.filter(n => n % 2 === 0);
+            const dobles = numeros.map(n => n * 2);
+            const suma = numeros.reduce((acum, n) => acum + n, 0);
+            
+            // Crear salida formateada
+            let salida = "// Trabajando con Arrays\n\n";
+            
+            salida += `Array original: ${JSON.stringify(frutas)}\n\n`;
+            
+            salida += `// Operaciones básicas\n`;
+            salida += `Última fruta eliminada: "${ultimaFruta}"\n`;
+            salida += `Primera fruta eliminada: "${primeraFruta}"\n`;
+            salida += `Frutas entre posiciones 1 y 3: ${JSON.stringify(frutasBuscadas)}\n`;
+            salida += `Posición de "naranja": ${posicionNaranja}\n`;
+            salida += `¿Contiene "plátano"?: ${contienePlatano}\n\n`;
+            
+            salida += `// Combinación de arrays\n`;
+            salida += `Más frutas: ${JSON.stringify(masFrutas)}\n`;
+            salida += `Todas las frutas: ${JSON.stringify(todasLasFrutas)}\n\n`;
+            
+            salida += `// Métodos funcionales\n`;
+            salida += `Números: ${JSON.stringify(numeros)}\n`;
+            salida += `Números pares: ${JSON.stringify(pares)}\n`;
+            salida += `Números duplicados: ${JSON.stringify(dobles)}\n`;
+            salida += `Suma de todos los números: ${suma}\n`;
+            
+            mostrarEnOutput("arrays-output", salida, "info");
+        }
+        
+        // 5. Objetos
+        function mostrarObjetos() {
+            // Crear y manipular objetos
+            const usuario = {
+                nombre: "Ana García",
+                edad: 28,
+                email: "ana@ejemplo.com",
+                activo: true,
+                direccion: {
+                    calle: "Calle Principal",
+                    numero: 123,
+                    ciudad: "Madrid"
+                },
+                hobbies: ["natación", "fotografía", "cocina"],
+                saludar: function() {
+                    return `Hola, mi nombre es ${this.nombre}`;
+                }
+            };
+            
+            // Acceder y modificar propiedades
+            const nombreUsuario = usuario.nombre;
+            const ciudadUsuario = usuario.direccion.ciudad;
+            const primerHobby = usuario.hobbies[0];
+            const saludo = usuario.saludar();
+            
+            // Añadir y eliminar propiedades
+            usuario.telefono = "555-123456";
+            delete usuario.email;
+            
+            // Métodos de objetos
+            const propiedades = Object.keys(usuario);
+            const valores = Object.values(usuario);
+            
+            // Clonar un objeto
+            const usuarioCopia = { ...usuario }; // Spread operator (ES6)
+            
+            // Crear salida formateada
+            let salida = "// Trabajando con Objetos\n\n";
+            
+            salida += `Usuario: ${JSON.stringify(usuario, (key, value) => 
+                typeof value === 'function' ? '(función)' : value, 2)}\n\n`;
+            
+            salida += `// Acceso a propiedades\n`;
+            salida += `Nombre: ${nombreUsuario}\n`;
+            salida += `Ciudad: ${ciudadUsuario}\n`;
+            salida += `Primer hobby: ${primerHobby}\n`;
+            salida += `Saludo: ${saludo}\n\n`;
+            
+            salida += `// Propiedades y valores\n`;
+            salida += `Propiedades: ${JSON.stringify(propiedades)}\n`;
+            salida += `Valores: ${JSON.stringify(valores, (key, value) => 
+                typeof value === 'function' ? '(función)' : value)}\n\n`;
+            
+            salida += `// Desestructuración (ES6)\n`;
+            const { nombre, edad, direccion: { ciudad } } = usuario;
+            salida += `Desestructurado: nombre=${nombre}, edad=${edad}, ciudad=${ciudad}\n`;
+            
+            mostrarEnOutput("objetos-output", salida, "info");
+        }
+        
+        // 6. Condicionales
+        function verificarEdad() {
+            const edad = parseInt(document.getElementById("edad").value);
+            
+            if (isNaN(edad)) {
+                mostrarEnOutput("condicionales-output", "Por favor, introduce una edad válida.", "error");
+                return;
+            }
+            
+            let salida = `// Evaluando edad: ${edad}\n\n`;
+            
+            // Usando if/else
+            if (edad < 0) {
+                salida += "if/else: La edad no puede ser negativa.\n";
+            } else if (edad < 12) {
+                salida += "if/else: Eres un niño.\n";
+            } else if (edad < 18) {
+                salida += "if/else: Eres un adolescente.\n";
+            } else if (edad < 65) {
+                salida += "if/else: Eres un adulto.\n";
+            } else {
+                salida += "if/else: Eres un adulto mayor.\n";
+            }
+            
+            // Usando operador ternario
+            const esMayorDeEdad = edad >= 18 
+                ? "Eres mayor de edad" 
+                : "Eres menor de edad";
+            salida += `\nOperador ternario: ${esMayorDeEdad}\n`;
+            
+            // Usando switch
+            salida += "\n// Usando switch\n";
+            switch (true) {
+                case edad < 0:
+                    salida += "switch: La edad no puede ser negativa.\n";
+                    break;
+                case edad === 0:
+                    salida += "switch: Acabas de nacer.\n";
+                    break;
+                case edad < 12:
+                    salida += "switch: Eres un niño.\n";
+                    break;
+                case edad < 18:
+                    salida += "switch: Eres un adolescente.\n";
+                    break;
+                case edad === 18:
+                    salida += "switch: Acabas de llegar a la mayoría de edad.\n";
+                    break;
+                case edad < 65:
+                    salida += "switch: Eres un adulto.\n";
+                    break;
+                default:
+                    salida += "switch: Eres un adulto mayor.\n";
+            }
+            
+            // Verificación de años importantes
+            salida += "\n// Evaluaciones adicionales\n";
+            if (edad === 16) salida += "¡A los 16 puedes empezar a conducir en algunos países!\n";
+            if (edad === 18) salida += "¡A los 18 adquieres plena ciudadanía!\n";
+            if (edad === 21) salida += "¡21 es la mayoría de edad en EE.UU.!\n";
+            if (edad === 100) salida += "¡Felicidades por tu centenario!\n";
+            if (edad >= 110) salida += "¡Eres una persona supercentenaria!\n";
+            
+            const tipo = edad < 0 ? "error" : "success";
+            mostrarEnOutput("condicionales-output", salida, tipo);
+        }
+        
+        // 7. Bucles
+        function ejecutarBucles() {
+            const repeticiones = parseInt(document.getElementById("repeticiones").value);
+            
+            if (isNaN(repeticiones) || repeticiones < 1 || repeticiones > 20) {
+                mostrarEnOutput("bucles-output", "Por favor, introduce un número entre 1 y 20.", "error");
+                return;
+            }
+            
+            let salida = `// Ejecutando bucles con ${repeticiones} repeticiones\n\n`;
+            
+            // for
+            salida += "// Bucle for\n";
+            for (let i = 0; i < repeticiones; i++) {
+                salida += `Iteración ${i + 1}\n`;
+            }
+            
+            // while
+            salida += "\n// Bucle while\n";
+            let contador = 0;
+            while (contador < repeticiones) {
+                salida += `Iteración ${contador + 1}\n`;
+                contador++;
+            }
+            
+            // do-while
+            salida += "\n// Bucle do-while\n";
+            contador = 0;
+            do {
+                salida += `Iteración ${contador + 1}\n`;
+                contador++;
+            } while (contador < repeticiones);
+            
+            // for...of (ES6)
+            salida += "\n// Bucle for...of (para arrays)\n";
+            const numeros = Array.from({ length: repeticiones }, (_, i) => i + 1);
+            for (const numero of numeros) {
+                salida += `Número: ${numero}\n`;
+            }
+            
+            // for...in (para objetos)
+            salida += "\n// Bucle for...in (para objetos)\n";
+            const persona = {
+                nombre: "Laura",
+                edad: 30,
+                profesion: "Diseñadora"
+            };
+            for (const propiedad in persona) {
+                salida += `${propiedad}: ${persona[propiedad]}\n`;
+            }
+            
+            // forEach (para arrays)
+            salida += "\n// Método forEach\n";
+            numeros.forEach((numero, indice) => {
+                salida += `En posición ${indice}: ${numero}\n`;
+            });
+            
+            mostrarEnOutput("bucles-output", salida, "info");
+        }
+    </script>
+</body>
+</html> 
