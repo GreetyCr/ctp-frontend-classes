@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de Animaciones y Transiciones CSS</title>
+    <style>
+        /* Estilos generales */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 30px;
+        }
+        
+        .contenedor {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+        
+        h2 {
+            margin: 30px 0 15px;
+            color: #3498db;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .seccion {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .ejemplo {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        
+        .ejemplo-item {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            width: 250px;
+            text-align: center;
+        }
+        
+        .demo-area {
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .codigo {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 0;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        /* ESTILOS PARA LOS EJEMPLOS DE TRANSICIONES */
+        
+        /* Ejemplo 1: Transición básica */
+        .transicion-basica {
+            width: 100px;
+            height: 100px;
+            background-color: #3498db;
+            transition: all 0.3s ease;
+        }
+        
+        .transicion-basica:hover {
+            background-color: #e74c3c;
+            transform: scale(1.2);
+        }
+        
+        /* Ejemplo 2: Diferentes timing functions */
+        .timing-function {
+            width: 60px;
+            height: 60px;
+            background-color: #9b59b6;
+            transition: transform 1s;
+        }
+        
+        .ease { transition-timing-function: ease; }
+        .linear { transition-timing-function: linear; }
+        .ease-in { transition-timing-function: ease-in; }
+        .ease-out { transition-timing-function: ease-out; }
+        .ease-in-out { transition-timing-function: ease-in-out; }
+        .cubic-bezier { transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+        
+        .timing-container:hover .timing-function {
+            transform: translateX(180px);
+        }
+        
+        /* Ejemplo 3: Botón con múltiples transiciones */
+        .boton-fancy {
+            background-color: #2ecc71;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease,
+                        transform 0.2s ease,
+                        box-shadow 0.3s ease,
+                        padding 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .boton-fancy:hover {
+            background-color: #27ae60;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0,0,0,0.2);
+            padding: 12px 30px;
+        }
+        
+        .boton-fancy:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* ESTILOS PARA LOS EJEMPLOS DE ANIMACIONES */
+        
+        /* Ejemplo 1: Animación básica */
+        @keyframes pulso {
+            0% {
+                transform: scale(1);
+                background-color: #3498db;
+            }
+            50% {
+                transform: scale(1.2);
+                background-color: #e74c3c;
+            }
+            100% {
+                transform: scale(1);
+                background-color: #3498db;
+            }
+        }
+        
+        .animacion-basica {
+            width: 100px;
+            height: 100px;
+            background-color: #3498db;
+            animation: pulso 2s infinite ease-in-out;
+        }
+        
+        /* Ejemplo 2: Control de animación */
+        @keyframes rotar {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .animation-control {
+            width: 100px;
+            height: 100px;
+            background-color: #f1c40f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: rotar 3s linear infinite;
+            animation-play-state: paused;
+        }
+        
+        .animation-control.playing {
+            animation-play-state: running;
+        }
+        
+        /* Ejemplo 3: Loader/Spinner */
+        @keyframes girar {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: girar 1s linear infinite;
+        }
+        
+        /* Ejemplo 4: Animación de entrada */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-demo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .fade-in-element {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            background-color: #3498db;
+            animation: fadeIn 0.5s forwards;
+            opacity: 0;
+        }
+        
+        .fade-in-element:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in-element:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in-element:nth-child(3) { animation-delay: 0.3s; }
+        .fade-in-element:nth-child(4) { animation-delay: 0.4s; }
+        
+        .reset-fade-in {
+            margin-top: 10px;
+        }
+        
+        /* ESTILOS PARA EJEMPLOS DE TRANSFORMACIONES */
+        
+        /* Ejemplo 1: Transformaciones básicas */
+        .transformacion {
+            width: 100px;
+            height: 100px;
+            background-color: #1abc9c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        
+        .scale:hover { transform: scale(1.2); }
+        .rotate:hover { transform: rotate(45deg); }
+        .translate:hover { transform: translate(20px, 20px); }
+        .skew:hover { transform: skew(20deg, 10deg); }
+        .multiple:hover { transform: translate(20px, 0) rotate(45deg) scale(0.8); }
+        
+        /* Ejemplo 2: Tarjeta con flip 3D */
+        .flip-card-container {
+            perspective: 1000px;
+            width: 200px;
+            height: 250px;
+            margin: 0 auto;
+        }
+        
+        .flip-card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+        }
+        
+        .flip-card-container:hover .flip-card {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .flip-card-front {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .flip-card-back {
+            background-color: #e74c3c;
+            color: white;
+            transform: rotateY(180deg);
+        }
+        
+        /* Ejemplo 3: Menú Hamburguesa */
+        .hamburger {
+            width: 40px;
+            height: 30px;
+            position: relative;
+            cursor: pointer;
+            margin: 0 auto;
+        }
+        
+        .hamburger-line {
+            width: 100%;
+            height: 4px;
+            background-color: #333;
+            position: absolute;
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger-line:nth-child(1) { top: 0; }
+        .hamburger-line:nth-child(2) { top: 13px; }
+        .hamburger-line:nth-child(3) { bottom: 0; }
+        
+        .hamburger.active .hamburger-line:nth-child(1) {
+            transform: translateY(13px) rotate(45deg);
+        }
+        
+        .hamburger.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active .hamburger-line:nth-child(3) {
+            transform: translateY(-13px) rotate(-45deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <h1>Animaciones y Transiciones en CSS</h1>
+        
+        <!-- SECCIÓN DE TRANSICIONES -->
+        <section class="seccion">
+            <h2>Transiciones CSS</h2>
+            <p>Las transiciones permiten cambiar suavemente el valor de las propiedades CSS durante un periodo de tiempo definido.</p>
+            
+            <div class="ejemplo">
+                <div class="ejemplo-item">
+                    <h3>Transición Básica</h3>
+                    <div class="demo-area">
+                        <div class="transicion-basica"></div>
+                    </div>
+                    <p>Hover sobre el cuadrado para ver la transición.</p>
+                    <div class="codigo">
+                        transition: all 0.3s ease;
+                    </div>
+                </div>
+                
+                <div class="ejemplo-item timing-container">
+                    <h3>Timing Functions</h3>
+                    <div class="demo-area" style="flex-direction: column; align-items: flex-start;">
+                        <div class="timing-function ease">Ease</div>
+                        <div class="timing-function linear">Linear</div>
+                        <div class="timing-function ease-in">Ease-in</div>
+                        <div class="timing-function ease-out">Ease-out</div>
+                        <div class="timing-function cubic-bezier">Bezier</div>
+                    </div>
+                    <p>Hover sobre el contenedor para ver las diferencias.</p>
+                </div>
+                
+                <div class="ejemplo-item">
+                    <h3>Botón con Transiciones</h3>
+                    <div class="demo-area">
+                        <button class="boton-fancy">HOVER ME</button>
+                    </div>
+                    <p>Botón con múltiples propiedades transicionadas.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECCIÓN DE ANIMACIONES -->
+        <section class="seccion">
+            <h2>Animaciones CSS</h2>
+            <p>Las animaciones permiten crear efectos más complejos con múltiples estados de transición y mayor control.</p>
+            
+            <div class="ejemplo">
+                <div class="ejemplo-item">
+                    <h3>Animación Básica</h3>
+                    <div class="demo-area">
+                        <div class="animacion-basica"></div>
+                    </div>
+                    <p>Animación con @keyframes.</p>
+                    <div class="codigo">
+                        animation: pulso 2s infinite;
+                    </div>
+                </div>
+                
+                <div class="ejemplo-item">
+                    <h3>Control de Animación</h3>
+                    <div class="demo-area">
+                        <div class="animation-control">
+                            <span>▶</span>
+                        </div>
+                    </div>
+                    <button class="btn toggle-animation">Iniciar / Pausar</button>
+                    <p>Control de animation-play-state.</p>
+                </div>
+                
+                <div class="ejemplo-item">
+                    <h3>Loader/Spinner</h3>
+                    <div class="demo-area">
+                        <div class="loader"></div>
+                    </div>
+                    <p>Animación de carga infinita.</p>
+                </div>
+                
+                <div class="ejemplo-item">
+                    <h3>Animación Secuencial</h3>
+                    <div class="demo-area fade-in-demo">
+                        <div class="fade-in-element"></div>
+                        <div class="fade-in-element"></div>
+                        <div class="fade-in-element"></div>
+                        <div class="fade-in-element"></div>
+                    </div>
+                    <button class="btn reset-fade-in">Reiniciar</button>
+                    <p>Elementos con retraso secuencial.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECCIÓN DE TRANSFORMACIONES -->
+        <section class="seccion">
+            <h2>Transformaciones CSS</h2>
+            <p>Las transformaciones modifican visualmente los elementos sin afectar el flujo del documento.</p>
+            
+            <div class="ejemplo">
+                <div class="ejemplo-item">
+                    <h3>Transform: Scale</h3>
+                    <div class="demo-area">
+                        <div class="transformacion scale">Scale</div>
+                    </div>
+                    <p>Hover para ver escala.</p>
+                </div>
+                
+                <div class="ejemplo-item">
+                    <h3>Transform: Rotate</h3>
+                    <div class="demo-area">
+                        <div class="transformacion rotate">Rotate</div>
+                    </div>
+                    <p>Hover para ver rotación.</p>
+                </div>
+                
+                <div class="ejemplo-item">
+                    <h3>Transform: Translate</h3>
+                    <div class="demo-area">
+                        <div class="transformacion translate">Move</div>
+                    </div>
+                    <p>Hover para ver traslación.</p>
+                </div>
+                
+                <div class="ejemplo-item">
+                    <h3>Transform: Skew</h3>
+                    <div class="demo-area">
+                        <div class="transformacion skew">Skew</div>
+                    </div>
+                    <p>Hover para ver sesgo.</p>
+                </div>
+                
+                <div class="ejemplo-item">
+                    <h3>Transforms Múltiples</h3>
+                    <div class="demo-area">
+                        <div class="transformacion multiple">Multi</div>
+                    </div>
+                    <p>Combinando transformaciones.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECCIÓN DE EJEMPLOS PRÁCTICOS -->
+        <section class="seccion">
+            <h2>Ejemplos Prácticos</h2>
+            <p>Aplicaciones reales de animaciones y transiciones.</p>
+            
+            <div class="ejemplo">
+                <div class="ejemplo-item">
+                    <h3>Tarjeta con Flip 3D</h3>
+                    <div class="demo-area" style="height: 280px;">
+                        <div class="flip-card-container">
+                            <div class="flip-card">
+                                <div class="flip-card-front">
+                                    <h4>Frente de la Tarjeta</h4>
+                                    <p>Hover para voltear</p>
+                                </div>
+                                <div class="flip-card-back">
+                                    <h4>Dorso de la Tarjeta</h4>
+                                    <p>¡Has volteado la tarjeta!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Efecto de volteado 3D.</p>
+                </div>
+                
+                <div class="ejemplo-item">
+                    <h3>Menú Hamburguesa</h3>
+                    <div class="demo-area">
+                        <div class="hamburger">
+                            <div class="hamburger-line"></div>
+                            <div class="hamburger-line"></div>
+                            <div class="hamburger-line"></div>
+                        </div>
+                    </div>
+                    <button class="btn toggle-hamburger">Cambiar Estado</button>
+                    <p>Animación de menú hamburguesa.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // Control de animación
+        const toggleAnimationBtn = document.querySelector('.toggle-animation');
+        const animationControl = document.querySelector('.animation-control');
+        
+        toggleAnimationBtn.addEventListener('click', function() {
+            animationControl.classList.toggle('playing');
+        });
+        
+        // Reset de la animación de fade-in
+        const resetFadeInBtn = document.querySelector('.reset-fade-in');
+        const fadeInElements = document.querySelectorAll('.fade-in-element');
+        
+        resetFadeInBtn.addEventListener('click', function() {
+            fadeInElements.forEach(el => {
+                el.style.animation = 'none';
+                setTimeout(() => {
+                    el.style.animation = '';
+                }, 10);
+            });
+        });
+        
+        // Toggle del menú hamburguesa
+        const toggleHamburgerBtn = document.querySelector('.toggle-hamburger');
+        const hamburger = document.querySelector('.hamburger');
+        
+        toggleHamburgerBtn.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+        });
+    </script>
+</body>
+</html> 

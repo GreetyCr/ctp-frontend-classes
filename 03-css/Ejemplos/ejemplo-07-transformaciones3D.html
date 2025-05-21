@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformaciones y Efectos 3D en CSS</title>
+    <style>
+        /* Estilos generales */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f0f2f5;
+            padding: 30px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+        
+        h2 {
+            margin: 20px 0;
+            color: #3498db;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .description {
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .demo-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+        }
+        
+        /* Transformaciones 2D */
+        .transform-2d {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .transform-box {
+            width: 150px;
+            height: 150px;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+        
+        .scale:hover {
+            transform: scale(1.2);
+        }
+        
+        .rotate:hover {
+            transform: rotate(45deg);
+        }
+        
+        .skew:hover {
+            transform: skew(10deg, 10deg);
+        }
+        
+        .translate:hover {
+            transform: translate(20px, -20px);
+        }
+        
+        .multiple:hover {
+            transform: scale(1.1) rotate(10deg) translateX(10px);
+        }
+        
+        .origin {
+            transform-origin: top left;
+        }
+        
+        .origin:hover {
+            transform: rotate(30deg);
+        }
+        
+        /* Transformaciones 3D */
+        .transform-3d {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            justify-content: center;
+            perspective: 1000px;
+        }
+        
+        .transform-3d-box {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            transition: all 0.5s ease;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        
+        .rotateX:hover {
+            transform: rotateX(60deg);
+        }
+        
+        .rotateY:hover {
+            transform: rotateY(60deg);
+        }
+        
+        .rotateZ:hover {
+            transform: rotateZ(60deg);
+        }
+        
+        .translate3d:hover {
+            transform: translate3d(20px, -20px, 50px);
+        }
+        
+        .box-face {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background-color: rgba(52, 152, 219, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border: 2px solid #2980b9;
+        }
+        
+        /* Cubo 3D */
+        .cube-container {
+            width: 200px;
+            height: 200px;
+            perspective: 1000px;
+            margin: 40px auto;
+        }
+        
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s ease;
+        }
+        
+        .cube-container:hover .cube {
+            transform: rotateY(180deg) rotateX(180deg);
+        }
+        
+        .cube-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+        }
+        
+        .front {
+            transform: translateZ(100px);
+            background-color: rgba(231, 76, 60, 0.8);
+        }
+        
+        .back {
+            transform: rotateY(180deg) translateZ(100px);
+            background-color: rgba(46, 204, 113, 0.8);
+        }
+        
+        .right {
+            transform: rotateY(90deg) translateZ(100px);
+            background-color: rgba(52, 152, 219, 0.8);
+        }
+        
+        .left {
+            transform: rotateY(-90deg) translateZ(100px);
+            background-color: rgba(155, 89, 182, 0.8);
+        }
+        
+        .top {
+            transform: rotateX(90deg) translateZ(100px);
+            background-color: rgba(241, 196, 15, 0.8);
+        }
+        
+        .bottom {
+            transform: rotateX(-90deg) translateZ(100px);
+            background-color: rgba(230, 126, 34, 0.8);
+        }
+        
+        /* Tarjeta 3D Flip */
+        .card-container {
+            width: 300px;
+            height: 400px;
+            perspective: 1000px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s ease;
+        }
+        
+        .card-container:hover .card {
+            transform: rotateY(180deg);
+        }
+        
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-front {
+            background-image: linear-gradient(45deg, #3498db, #2c3e50);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+        }
+        
+        .card-back {
+            background-image: linear-gradient(45deg, #2c3e50, #3498db);
+            color: white;
+            transform: rotateY(180deg);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .card-logo {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .card-subtitle {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        
+        .card-back p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .card-back button {
+            background-color: white;
+            color: #3498db;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            align-self: flex-start;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .card-back button:hover {
+            background-color: #f1f1f1;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Carrusel 3D */
+        .carousel-container {
+            margin: 50px auto;
+            width: 600px;
+            height: 400px;
+            position: relative;
+            perspective: 1000px;
+        }
+        
+        .carousel {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            animation: rotate 15s infinite linear;
+        }
+        
+        .carousel:hover {
+            animation-play-state: paused;
+        }
+        
+        .carousel-item {
+            position: absolute;
+            width: 250px;
+            height: 200px;
+            left: 175px;
+            top: 100px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            backface-visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-item:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .carousel-item:nth-child(1) { transform: rotateY(0deg) translateZ(350px); }
+        .carousel-item:nth-child(2) { transform: rotateY(60deg) translateZ(350px); }
+        .carousel-item:nth-child(3) { transform: rotateY(120deg) translateZ(350px); }
+        .carousel-item:nth-child(4) { transform: rotateY(180deg) translateZ(350px); }
+        .carousel-item:nth-child(5) { transform: rotateY(240deg) translateZ(350px); }
+        .carousel-item:nth-child(6) { transform: rotateY(300deg) translateZ(350px); }
+        
+        .carousel-item img {
+            max-width: 80px;
+            max-height: 80px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+        
+        .carousel-item h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .carousel-item p {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+        
+        /* Controles */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .controls button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .controls button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Transformaciones y Efectos 3D en CSS</h1>
+        
+        <!-- Transformaciones 2D -->
+        <section class="section">
+            <h2>Transformaciones 2D</h2>
+            <p class="description">
+                Las transformaciones 2D permiten modificar elementos en el plano bidimensional.
+                Pasa el cursor sobre cada caja para ver el efecto.
+            </p>
+            
+            <div class="demo-area">
+                <div class="transform-2d">
+                    <div>
+                        <div class="transform-box scale">Scale</div>
+                        <p>transform: scale(1.2);</p>
+                    </div>
+                    
+                    <div>
+                        <div class="transform-box rotate">Rotate</div>
+                        <p>transform: rotate(45deg);</p>
+                    </div>
+                    
+                    <div>
+                        <div class="transform-box skew">Skew</div>
+                        <p>transform: skew(10deg, 10deg);</p>
+                    </div>
+                    
+                    <div>
+                        <div class="transform-box translate">Translate</div>
+                        <p>transform: translate(20px, -20px);</p>
+                    </div>
+                    
+                    <div>
+                        <div class="transform-box multiple">Múltiple</div>
+                        <p>transform: scale(1.1) rotate(10deg) translateX(10px);</p>
+                    </div>
+                    
+                    <div>
+                        <div class="transform-box origin">Origin</div>
+                        <p>transform-origin: top left; transform: rotate(30deg);</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Transformaciones 3D -->
+        <section class="section">
+            <h2>Transformaciones 3D Básicas</h2>
+            <p class="description">
+                Las transformaciones 3D permiten manipular elementos en el espacio tridimensional.
+                Pasa el cursor sobre cada caja para ver el efecto.
+            </p>
+            
+            <div class="demo-area">
+                <div class="transform-3d">
+                    <div>
+                        <div class="transform-3d-box rotateX">
+                            <div class="box-face">RotateX</div>
+                        </div>
+                        <p>transform: rotateX(60deg);</p>
+                    </div>
+                    
+                    <div>
+                        <div class="transform-3d-box rotateY">
+                            <div class="box-face">RotateY</div>
+                        </div>
+                        <p>transform: rotateY(60deg);</p>
+                    </div>
+                    
+                    <div>
+                        <div class="transform-3d-box rotateZ">
+                            <div class="box-face">RotateZ</div>
+                        </div>
+                        <p>transform: rotateZ(60deg);</p>
+                    </div>
+                    
+                    <div>
+                        <div class="transform-3d-box translate3d">
+                            <div class="box-face">Translate3D</div>
+                        </div>
+                        <p>transform: translate3d(20px, -20px, 50px);</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Cubo 3D -->
+        <section class="section">
+            <h2>Cubo 3D</h2>
+            <p class="description">
+                Un cubo 3D completo creado con transformaciones CSS 3D.
+                Pasa el cursor sobre el cubo para verlo girar.
+            </p>
+            
+            <div class="demo-area">
+                <div class="cube-container">
+                    <div class="cube">
+                        <div class="cube-face front">1</div>
+                        <div class="cube-face back">2</div>
+                        <div class="cube-face right">3</div>
+                        <div class="cube-face left">4</div>
+                        <div class="cube-face top">5</div>
+                        <div class="cube-face bottom">6</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Tarjeta 3D Flip -->
+        <section class="section">
+            <h2>Tarjeta con Flip 3D</h2>
+            <p class="description">
+                Una tarjeta que se voltea en 3D para mostrar información en el reverso.
+                Pasa el cursor sobre la tarjeta para ver el efecto.
+            </p>
+            
+            <div class="demo-area">
+                <div class="card-container">
+                    <div class="card">
+                        <div class="card-face card-front">
+                            <div class="card-logo">🌟</div>
+                            <h3 class="card-title">CSS 3D Transform</h3>
+                            <p class="card-subtitle">Pasa el cursor para ver el efecto</p>
+                        </div>
+                        <div class="card-face card-back">
+                            <h3 class="card-title">Efecto Flip 3D</h3>
+                            <p>Este efecto utiliza las propiedades CSS:</p>
+                            <p>• transform-style: preserve-3d</p>
+                            <p>• backface-visibility: hidden</p>
+                            <p>• perspective: 1000px</p>
+                            <p>• transform: rotateY(180deg)</p>
+                            <button>Más información</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Carrusel 3D -->
+        <section class="section">
+            <h2>Carrusel 3D</h2>
+            <p class="description">
+                Un carrusel en 3D que rota continuamente y muestra múltiples elementos.
+                Pasa el cursor sobre el carrusel para pausar la rotación.
+            </p>
+            
+            <div class="demo-area">
+                <div class="carousel-container">
+                    <div class="carousel">
+                        <div class="carousel-item">
+                            <img src="https://via.placeholder.com/80/3498db/FFFFFF" alt="Placeholder Image">
+                            <h3>HTML</h3>
+                            <p>Estructura tu contenido web</p>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://via.placeholder.com/80/e74c3c/FFFFFF" alt="Placeholder Image">
+                            <h3>CSS</h3>
+                            <p>Diseña y estiliza tu página</p>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://via.placeholder.com/80/f1c40f/000000" alt="Placeholder Image">
+                            <h3>JavaScript</h3>
+                            <p>Agrega interactividad</p>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://via.placeholder.com/80/2ecc71/FFFFFF" alt="Placeholder Image">
+                            <h3>Responsive</h3>
+                            <p>Adapta a todos los dispositivos</p>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://via.placeholder.com/80/9b59b6/FFFFFF" alt="Placeholder Image">
+                            <h3>Accesibilidad</h3>
+                            <p>Web para todos</p>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://via.placeholder.com/80/e67e22/FFFFFF" alt="Placeholder Image">
+                            <h3>Performance</h3>
+                            <p>Velocidad y optimización</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Este script es opcional, se puede usar para controlar el carrusel o añadir interactividad adicional
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Página cargada. Mueve el cursor sobre los elementos para ver los efectos 3D.');
+        });
+    </script>
+</body>
+</html> 
