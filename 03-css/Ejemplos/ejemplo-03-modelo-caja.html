@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de Modelo de Caja en CSS</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f9fc;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+            overflow: hidden; /* Para contener elementos flotantes */
+        }
+
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            color: #e74c3c;
+        }
+
+        .example-container {
+            margin-bottom: 20px;
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        /* Estilos específicos para modelo de caja */
+
+        /* 1. Modelo de caja estándar */
+        .box-standard {
+            width: 300px;
+            height: 150px;
+            padding: 20px;
+            border: 10px solid #3498db;
+            margin: 30px;
+            background-color: #d6eaf8;
+        }
+
+        /* 2. Modelo de caja alternativo (border-box) */
+        .box-border-box {
+            box-sizing: border-box;
+            width: 300px;
+            height: 150px;
+            padding: 20px;
+            border: 10px solid #9b59b6;
+            margin: 30px;
+            background-color: #e8daef;
+        }
+
+        /* 3. Box dimensiones */
+        .box-dimensions {
+            margin: 0 auto;
+            width: 400px;
+            height: 80px;
+            background-color: #d5f5e3;
+            border: 2px dashed #2ecc71;
+            text-align: center;
+            line-height: 80px;
+            font-weight: bold;
+        }
+
+        /* 4. Margin y Padding específicos */
+        .margin-specific {
+            width: 200px;
+            height: 100px;
+            background-color: #fadbd8;
+            border: 2px solid #e74c3c;
+            /* Márgenes diferentes para cada lado */
+            margin-top: 10px;
+            margin-right: 20px;
+            margin-bottom: 30px;
+            margin-left: 40px;
+            /* shorthand: margin: 10px 20px 30px 40px; */
+        }
+
+        .padding-specific {
+            width: 200px;
+            height: 100px;
+            background-color: #fef9e7;
+            border: 2px solid #f1c40f;
+            /* Paddings diferentes para cada lado */
+            padding-top: 5px;
+            padding-right: 15px;
+            padding-bottom: 25px;
+            padding-left: 35px;
+            /* shorthand: padding: 5px 15px 25px 35px; */
+        }
+
+        /* 5. Margin collapse */
+        .margin-collapse-1 {
+            width: 200px;
+            height: 50px;
+            background-color: #d6eaf8;
+            border: 2px solid #3498db;
+            margin-bottom: 30px;
+        }
+
+        .margin-collapse-2 {
+            width: 200px;
+            height: 50px;
+            background-color: #d6eaf8;
+            border: 2px solid #3498db;
+            margin-top: 40px; /* Este margen "colapsa" con el anterior */
+        }
+
+        /* 6. Margin auto para centrado */
+        .margin-auto {
+            width: 300px;
+            height: 80px;
+            background-color: #d5f5e3;
+            border: 2px solid #2ecc71;
+            margin: 0 auto; /* Centrado horizontal */
+            line-height: 80px;
+            text-align: center;
+        }
+
+        /* 7. Bordes */
+        .border-example {
+            width: 150px;
+            height: 80px;
+            margin: 10px;
+            background-color: #eaeded;
+            padding: 10px;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .border-solid {
+            border: 4px solid #3498db;
+        }
+
+        .border-dashed {
+            border: 4px dashed #e74c3c;
+        }
+
+        .border-dotted {
+            border: 4px dotted #2ecc71;
+        }
+
+        .border-double {
+            border: 4px double #f39c12;
+        }
+
+        .border-radius {
+            border: 4px solid #9b59b6;
+            border-radius: 20px;
+        }
+
+        /* 8. Ejemplo de outline */
+        .outline-example {
+            width: 200px;
+            height: 80px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #eaeded;
+            border: 2px solid #3498db;
+            outline: 4px dashed #e74c3c;
+            outline-offset: 5px;
+            text-align: center;
+        }
+
+        /* 9. Box shadow */
+        .shadow-example {
+            width: 200px;
+            height: 100px;
+            margin: 30px auto;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .shadow-standard {
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .shadow-inset {
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .shadow-multiple {
+            box-shadow: 
+                3px 3px 5px rgba(0, 0, 0, 0.2),
+                0 0 10px rgba(52, 152, 219, 0.5),
+                0 0 20px rgba(231, 76, 60, 0.3);
+        }
+
+        /* 10. Overflow */
+        .overflow-example {
+            width: 250px;
+            height: 150px;
+            margin: 0 auto;
+            background-color: #f5f5f5;
+            border: 2px solid #34495e;
+            padding: 10px;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .overflow-content {
+            width: 100%;
+            height: 100%;
+            background-color: #ecf0f1;
+            padding: 10px;
+        }
+
+        .overflow-visible {
+            overflow: visible;
+        }
+
+        .overflow-hidden {
+            overflow: hidden;
+        }
+
+        .overflow-scroll {
+            overflow: scroll;
+        }
+
+        .overflow-auto {
+            overflow: auto;
+        }
+
+        /* 11. Visualización de elementos */
+        .display-example {
+            background-color: #eaeded;
+            padding: 5px;
+            margin: 10px 0;
+        }
+
+        .display-inline {
+            display: inline;
+            background-color: #d6eaf8;
+            border: 1px solid #3498db;
+            padding: 5px 10px;
+        }
+
+        .display-block {
+            display: block;
+            background-color: #fadbd8;
+            border: 1px solid #e74c3c;
+            padding: 5px 10px;
+            margin: 5px 0;
+        }
+
+        .display-inline-block {
+            display: inline-block;
+            background-color: #d5f5e3;
+            border: 1px solid #2ecc71;
+            padding: 5px 10px;
+            width: 150px;
+            height: 40px;
+            margin: 5px;
+            vertical-align: middle;
+        }
+
+        .display-none {
+            display: none;
+            background-color: #fef9e7;
+            border: 1px solid #f1c40f;
+            padding: 5px 10px;
+        }
+
+        /* 12. Visibilidad */
+        .visibility-example {
+            background-color: #eaeded;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .visibility-visible {
+            visibility: visible;
+            display: inline-block;
+            width: 100px;
+            height: 40px;
+            background-color: #d6eaf8;
+            border: 1px solid #3498db;
+            margin: 5px;
+            text-align: center;
+            line-height: 40px;
+        }
+
+        .visibility-hidden {
+            visibility: hidden;
+            display: inline-block;
+            width: 100px;
+            height: 40px;
+            background-color: #fadbd8;
+            border: 1px solid #e74c3c;
+            margin: 5px;
+            text-align: center;
+            line-height: 40px;
+        }
+
+        .visibility-collapse {
+            visibility: collapse;
+            display: inline-block;
+            width: 100px;
+            height: 40px;
+            background-color: #d5f5e3;
+            border: 1px solid #2ecc71;
+            margin: 5px;
+            text-align: center;
+            line-height: 40px;
+        }
+
+        /* 13. Diferencias entre inline, block e inline-block */
+        .sizing-comparison {
+            background-color: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .comparison-inline span {
+            background-color: #d6eaf8;
+            border: 1px solid #3498db;
+            padding: 5px;
+            margin: 5px;
+            /* Los elementos inline no respetan width y height */
+            width: 100px;
+            height: 50px;
+        }
+
+        .comparison-block div {
+            background-color: #fadbd8;
+            border: 1px solid #e74c3c;
+            padding: 5px;
+            margin: 5px;
+            width: 80%;
+        }
+
+        .comparison-inline-block span {
+            display: inline-block;
+            background-color: #d5f5e3;
+            border: 1px solid #2ecc71;
+            padding: 5px;
+            margin: 5px;
+            width: 100px;
+            height: 50px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <h1>Modelo de Caja en CSS</h1>
+
+    <div class="section">
+        <h2>1. Modelo de Caja Estándar vs. Border-Box</h2>
+        <p>El modelo de caja estándar incluye el ancho/alto + padding + borde (el margen es externo).</p>
+
+        <div class="example-container">
+            <h3>Modelo Estándar (content-box)</h3>
+            <div class="box-standard">
+                Este elemento tiene un ancho total de 360px (300px + 20px*2 + 10px*2)
+            </div>
+            <pre><code>width: 300px;
+height: 150px;
+padding: 20px;
+border: 10px solid #3498db;
+margin: 30px;
+/* box-sizing: content-box; (por defecto) */</code></pre>
+        </div>
+
+        <div class="example-container">
+            <h3>Modelo Alternativo (border-box)</h3>
+            <div class="box-border-box">
+                Este elemento tiene un ancho total de 300px (ancho incluye padding y borde)
+            </div>
+            <pre><code>box-sizing: border-box;
+width: 300px;
+height: 150px;
+padding: 20px;
+border: 10px solid #9b59b6;
+margin: 30px;</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>2. Dimensiones de Caja</h2>
+        <div class="example-container">
+            <div class="box-dimensions">width: 400px, height: 80px</div>
+            <pre><code>width: 400px;
+height: 80px;</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>3. Margin y Padding Específicos</h2>
+        <div class="example-container">
+            <h3>Márgenes Específicos</h3>
+            <div class="margin-specific"></div>
+            <pre><code>margin-top: 10px;
+margin-right: 20px;
+margin-bottom: 30px;
+margin-left: 40px;
+/* shorthand: margin: 10px 20px 30px 40px; */</code></pre>
+        </div>
+
+        <div class="example-container">
+            <h3>Padding Específico</h3>
+            <div class="padding-specific"></div>
+            <pre><code>padding-top: 5px;
+padding-right: 15px;
+padding-bottom: 25px;
+padding-left: 35px;
+/* shorthand: padding: 5px 15px 25px 35px; */</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>4. Colapso de Márgenes (Margin Collapse)</h2>
+        <p>Cuando dos elementos verticales se encuentran, sus márgenes colapsan, tomando el valor del margen mayor.</p>
+        <div class="example-container">
+            <div class="margin-collapse-1">Margen inferior: 30px</div>
+            <div class="margin-collapse-2">Margen superior: 40px</div>
+            <p>El espacio total entre los dos elementos es 40px (no 70px)</p>
+            <pre><code>/* Elemento 1 */
+margin-bottom: 30px;
+
+/* Elemento 2 */
+margin-top: 40px;</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>5. Centrado Horizontal con Margin Auto</h2>
+        <div class="example-container">
+            <div class="margin-auto">Elemento centrado</div>
+            <pre><code>width: 300px; /* Debe tener un ancho definido */
+margin: 0 auto; /* Centra horizontalmente */</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>6. Estilos de Bordes</h2>
+        <div class="example-container">
+            <div class="border-example border-solid">Solid</div>
+            <div class="border-example border-dashed">Dashed</div>
+            <div class="border-example border-dotted">Dotted</div>
+            <div class="border-example border-double">Double</div>
+            <div class="border-example border-radius">Border Radius</div>
+            <pre><code>/* Ejemplos de bordes */
+border: 4px solid #3498db;
+border: 4px dashed #e74c3c;
+border: 4px dotted #2ecc71;
+border: 4px double #f39c12;
+
+/* Border radius */
+border: 4px solid #9b59b6;
+border-radius: 20px;</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>7. Outline (contorno)</h2>
+        <p>A diferencia del borde, el outline no afecta al layout y puede tener un offset.</p>
+        <div class="example-container">
+            <div class="outline-example">Ejemplo de outline</div>
+            <pre><code>border: 2px solid #3498db;
+outline: 4px dashed #e74c3c;
+outline-offset: 5px;</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>8. Box Shadow</h2>
+        <div class="example-container">
+            <div class="shadow-example shadow-standard">Sombra estándar</div>
+            <pre><code>box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);</code></pre>
+
+            <div class="shadow-example shadow-inset">Sombra interna</div>
+            <pre><code>box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);</code></pre>
+
+            <div class="shadow-example shadow-multiple">Múltiples sombras</div>
+            <pre><code>box-shadow: 
+    3px 3px 5px rgba(0, 0, 0, 0.2),
+    0 0 10px rgba(52, 152, 219, 0.5),
+    0 0 20px rgba(231, 76, 60, 0.3);</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>9. Overflow (desbordamiento)</h2>
+        <div class="example-container">
+            <div class="overflow-example overflow-visible">
+                <strong>overflow: visible</strong>
+                <div class="overflow-content">
+                    Este contenido sobrepasa el contenedor y es visible. Este contenido sobrepasa el contenedor y es visible.
+                    Este contenido sobrepasa el contenedor y es visible.
+                </div>
+            </div>
+
+            <div class="overflow-example overflow-hidden">
+                <strong>overflow: hidden</strong>
+                <div class="overflow-content">
+                    Este contenido sobrepasa el contenedor pero no es visible. Este contenido sobrepasa el contenedor pero no es visible.
+                    Este contenido sobrepasa el contenedor pero no es visible.
+                </div>
+            </div>
+
+            <div class="overflow-example overflow-scroll">
+                <strong>overflow: scroll</strong>
+                <div class="overflow-content">
+                    Este contenido tiene barras de desplazamiento, incluso si no se necesitan. Este contenido tiene barras de desplazamiento.
+                    Este contenido tiene barras de desplazamiento.
+                </div>
+            </div>
+
+            <div class="overflow-example overflow-auto">
+                <strong>overflow: auto</strong>
+                <div class="overflow-content">
+                    Este contenido tendrá barras de desplazamiento solo si son necesarias. Este contenido tendrá barras de desplazamiento solo si son necesarias.
+                    Este contenido tendrá barras de desplazamiento solo si son necesarias.
+                </div>
+            </div>
+
+            <pre><code>overflow: visible; /* Valor por defecto */
+overflow: hidden;
+overflow: scroll;
+overflow: auto;</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>10. Propiedades de Visualización (Display)</h2>
+        <div class="example-container">
+            <h3>display: inline</h3>
+            <div class="display-example">
+                <span class="display-inline">Elemento 1</span>
+                <span class="display-inline">Elemento 2</span>
+                <span class="display-inline">Elemento 3</span>
+            </div>
+            <pre><code>display: inline;
+/* No respeta width/height, elementos en línea */</code></pre>
+
+            <h3>display: block</h3>
+            <div class="display-example">
+                <div class="display-block">Elemento 1</div>
+                <div class="display-block">Elemento 2</div>
+                <div class="display-block">Elemento 3</div>
+            </div>
+            <pre><code>display: block;
+/* Ocupa todo el ancho disponible, elementos en bloque */</code></pre>
+
+            <h3>display: inline-block</h3>
+            <div class="display-example">
+                <span class="display-inline-block">Elemento 1</span>
+                <span class="display-inline-block">Elemento 2</span>
+                <span class="display-inline-block">Elemento 3</span>
+            </div>
+            <pre><code>display: inline-block;
+/* En línea pero respeta width/height */</code></pre>
+
+            <h3>display: none</h3>
+            <div class="display-example">
+                <p>El elemento con display:none no es visible y no ocupa espacio.</p>
+                <span class="display-none">Este elemento no es visible</span>
+            </div>
+            <pre><code>display: none;
+/* Oculta el elemento y no reserva espacio */</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>11. Propiedades de Visibilidad</h2>
+        <div class="example-container">
+            <div class="visibility-example">
+                <div class="visibility-visible">Visible</div>
+                <div class="visibility-hidden">Hidden</div>
+                <div class="visibility-collapse">Collapse</div>
+            </div>
+            <p>A diferencia de display:none, visibility:hidden mantiene el espacio del elemento en el layout.</p>
+            <pre><code>visibility: visible; /* Valor por defecto */
+visibility: hidden; /* Invisible pero ocupa espacio */
+visibility: collapse; /* Similar a hidden, con excepciones */</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>12. Comparación entre Inline, Block e Inline-Block</h2>
+        <div class="example-container">
+            <h3>Elementos Inline</h3>
+            <div class="sizing-comparison comparison-inline">
+                <span>Elemento 1</span>
+                <span>Elemento 2</span>
+                <span>Elemento 3</span>
+            </div>
+            <pre><code>/* Los elementos inline: */
+- Se muestran en línea (uno al lado del otro)
+- No respetan width/height
+- Solo se aplican márgenes horizontales, no verticales</code></pre>
+
+            <h3>Elementos Block</h3>
+            <div class="sizing-comparison comparison-block">
+                <div>Elemento 1</div>
+                <div>Elemento 2</div>
+                <div>Elemento 3</div>
+            </div>
+            <pre><code>/* Los elementos block: */
+- Ocupan todo el ancho disponible
+- Generan saltos de línea antes y después
+- Respetan todas las propiedades de dimensión</code></pre>
+
+            <h3>Elementos Inline-Block</h3>
+            <div class="sizing-comparison comparison-inline-block">
+                <span>Elemento 1</span>
+                <span>Elemento 2</span>
+                <span>Elemento 3</span>
+            </div>
+            <pre><code>/* Los elementos inline-block: */
+- Se muestran en línea (uno al lado del otro)
+- Respetan width/height
+- Respetan todas las propiedades de margen</code></pre>
+        </div>
+    </div>
+</body>
+</html> 

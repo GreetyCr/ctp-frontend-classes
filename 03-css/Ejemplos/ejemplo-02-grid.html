@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de CSS Grid</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f9fc;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            margin-bottom: 20px;
+        }
+
+        .item {
+            padding: 20px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Colores para los items */
+        .item:nth-child(1) { background-color: #3498db; }
+        .item:nth-child(2) { background-color: #9b59b6; }
+        .item:nth-child(3) { background-color: #2ecc71; }
+        .item:nth-child(4) { background-color: #e74c3c; }
+        .item:nth-child(5) { background-color: #f39c12; }
+        .item:nth-child(6) { background-color: #1abc9c; }
+        .item:nth-child(7) { background-color: #34495e; }
+        .item:nth-child(8) { background-color: #16a085; }
+        .item:nth-child(9) { background-color: #d35400; }
+
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            color: #e74c3c;
+        }
+
+        /* Estilos específicos para Grid */
+
+        /* 1. Grid container básico */
+        .grid-container {
+            display: grid;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-radius: 4px;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* 2. Definición de columnas y filas */
+        .grid-columns {
+            grid-template-columns: 100px 100px 100px;
+        }
+
+        .grid-fr-units {
+            grid-template-columns: 1fr 2fr 1fr;
+        }
+
+        .grid-repeat {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-rows {
+            grid-template-rows: 80px 120px;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-auto-rows {
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: minmax(80px, auto);
+        }
+
+        /* 3. Gap (espaciado) */
+        .grid-gap {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px; /* gap global */
+        }
+
+        .grid-gap-specific {
+            grid-template-columns: repeat(3, 1fr);
+            row-gap: 30px;
+            column-gap: 10px;
+        }
+
+        /* 4. Grid areas */
+        .grid-template-areas {
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: 80px 200px 80px;
+            grid-template-areas:
+                "header header header header"
+                "sidebar main main main"
+                "footer footer footer footer";
+        }
+
+        .header { grid-area: header; }
+        .sidebar { grid-area: sidebar; }
+        .main { grid-area: main; }
+        .footer { grid-area: footer; }
+
+        /* 5. Posicionamiento de elementos */
+        .grid-positioned {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 100px);
+        }
+
+        .pos-1 {
+            grid-column: 1 / 3; /* De línea 1 a línea 3 */
+            grid-row: 1;
+        }
+
+        .pos-2 {
+            grid-column: 3;
+            grid-row: 1 / 3;
+        }
+
+        .pos-3 {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .pos-4 {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .pos-5 {
+            grid-column: 1 / 4; /* Ocupa todo el ancho */
+            grid-row: 3;
+        }
+
+        /* 6. Alineación */
+        .grid-align {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 120px 120px;
+            justify-items: center; /* Alineación horizontal de items */
+            align-items: center;   /* Alineación vertical de items */
+        }
+
+        .grid-content-align {
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: 100px 100px;
+            height: 300px;
+            justify-content: space-around; /* Alineación horizontal del contenido */
+            align-content: space-between;   /* Alineación vertical del contenido */
+        }
+
+        /* 7. Auto-fit y auto-fill */
+        .grid-auto-fit {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+
+        .grid-auto-fill {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        }
+
+        /* 8. Layout responsivo con grid */
+        .grid-responsive {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-auto-rows: minmax(100px, auto);
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ejemplos de CSS Grid</h1>
+
+    <div class="section">
+        <h2>1. Grid Container Básico</h2>
+        <p>Un contenedor grid básico con 3 columnas de igual tamaño:</p>
+        <div class="grid-container grid-columns">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </div>
+        <pre><code>display: grid;
+grid-template-columns: 100px 100px 100px;</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>2. Unidades fr (fracciones)</h2>
+        <p>Usando unidades fr para dividir el espacio disponible:</p>
+        <div class="grid-container grid-fr-units">
+            <div class="item">1fr</div>
+            <div class="item">2fr</div>
+            <div class="item">1fr</div>
+        </div>
+        <pre><code>grid-template-columns: 1fr 2fr 1fr;</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>3. Función repeat()</h2>
+        <p>Usando repeat() para crear patrones repetidos:</p>
+        <div class="grid-container grid-repeat">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </div>
+        <pre><code>grid-template-columns: repeat(3, 1fr);</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>4. Filas Explícitas</h2>
+        <p>Definiendo explícitamente filas con diferentes alturas:</p>
+        <div class="grid-container grid-rows">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </div>
+        <pre><code>grid-template-rows: 80px 120px;
+grid-template-columns: repeat(3, 1fr);</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>5. Filas Automáticas</h2>
+        <p>Usando grid-auto-rows con minmax() para filas de altura variable:</p>
+        <div class="grid-container grid-auto-rows">
+            <div class="item">Contenido corto</div>
+            <div class="item">Contenido que podría ser más largo y necesitar más espacio</div>
+            <div class="item">Contenido</div>
+            <div class="item">Otro elemento con contenido variable que podría necesitar más espacio vertical</div>
+            <div class="item">Contenido corto</div>
+            <div class="item">Contenido</div>
+        </div>
+        <pre><code>grid-template-columns: repeat(3, 1fr);
+grid-auto-rows: minmax(80px, auto);</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>6. Espaciado con Gap</h2>
+        <p>Usando gap para separar filas y columnas uniformemente:</p>
+        <div class="grid-container grid-gap">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </div>
+        <pre><code>grid-template-columns: repeat(3, 1fr);
+gap: 20px;</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>7. Gap Específico</h2>
+        <p>Configurando diferentes espaciados para filas y columnas:</p>
+        <div class="grid-container grid-gap-specific">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </div>
+        <pre><code>grid-template-columns: repeat(3, 1fr);
+row-gap: 30px;
+column-gap: 10px;</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>8. Grid Template Areas</h2>
+        <p>Creando layouts con nombres de área:</p>
+        <div class="grid-container grid-template-areas">
+            <div class="item header">Header</div>
+            <div class="item sidebar">Sidebar</div>
+            <div class="item main">Main Content</div>
+            <div class="item footer">Footer</div>
+        </div>
+        <pre><code>grid-template-columns: repeat(4, 1fr);
+grid-template-rows: 80px 200px 80px;
+grid-template-areas:
+    "header header header header"
+    "sidebar main main main"
+    "footer footer footer footer";</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>9. Posicionamiento de Elementos</h2>
+        <p>Posicionando elementos individualmente en la cuadrícula:</p>
+        <div class="grid-container grid-positioned">
+            <div class="item pos-1">1 (columnas 1-2, fila 1)</div>
+            <div class="item pos-2">2 (columna 3, filas 1-2)</div>
+            <div class="item pos-3">3 (columna 1, fila 2)</div>
+            <div class="item pos-4">4 (columna 2, fila 2)</div>
+            <div class="item pos-5">5 (columnas 1-3, fila 3)</div>
+        </div>
+        <pre><code>/* Ejemplo para el item 1 */
+grid-column: 1 / 3; /* Desde línea 1 hasta línea 3 */
+grid-row: 1;</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>10. Alineación de Items</h2>
+        <p>Alineando los elementos dentro de sus celdas:</p>
+        <div class="grid-container grid-align">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </div>
+        <pre><code>justify-items: center; /* Alineación horizontal de items */
+align-items: center;   /* Alineación vertical de items */</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>11. Alineación de Contenido</h2>
+        <p>Alineando todo el contenido dentro del grid:</p>
+        <div class="grid-container grid-content-align">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </div>
+        <pre><code>justify-content: space-around; /* Alineación horizontal */
+align-content: space-between;   /* Alineación vertical */</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>12. Auto-fit vs Auto-fill</h2>
+        <p>auto-fit (ajusta elementos para llenar el espacio):</p>
+        <div class="grid-container grid-auto-fit">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+        </div>
+        <pre><code>grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));</code></pre>
+
+        <p>auto-fill (mantiene espacio para elementos adicionales):</p>
+        <div class="grid-container grid-auto-fill">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+        </div>
+        <pre><code>grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>13. Layout Responsivo con Grid</h2>
+        <p>Grid que se adapta automáticamente a diferentes tamaños de pantalla:</p>
+        <div class="grid-container grid-responsive">
+            <div class="item">Tarjeta 1</div>
+            <div class="item">Tarjeta 2</div>
+            <div class="item">Tarjeta 3</div>
+            <div class="item">Tarjeta 4</div>
+            <div class="item">Tarjeta 5</div>
+            <div class="item">Tarjeta 6</div>
+        </div>
+        <pre><code>grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+grid-auto-rows: minmax(100px, auto);
+gap: 20px;</code></pre>
+    </div>
+</body>
+</html> 
