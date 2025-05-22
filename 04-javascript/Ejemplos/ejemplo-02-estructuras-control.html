@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estructuras de Control en JavaScript</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        color: #333;
+        background-color: #f8f9fa;
+      }
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+      }
+      h2 {
+        color: #2980b9;
+        margin-top: 30px;
+        border-left: 4px solid #3498db;
+        padding-left: 10px;
+      }
+      .ejemplo {
+        background-color: white;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 25px;
+      }
+      .ejemplo h3 {
+        margin-top: 0;
+        color: #2c3e50;
+      }
+      .codigo {
+        background-color: #f5f5f5;
+        border-left: 4px solid #3498db;
+        padding: 10px;
+        font-family: monospace;
+        margin: 10px 0;
+        white-space: pre-wrap;
+      }
+      .resultado {
+        background-color: #e9f7ef;
+        border-left: 4px solid #27ae60;
+        padding: 10px;
+        margin: 10px 0;
+      }
+      button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        margin: 5px 0;
+      }
+      button:hover {
+        background-color: #2980b9;
+      }
+      input,
+      select {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        margin: 5px 0;
+      }
+      .controles {
+        margin: 15px 0;
+      }
+      .tema-oscuro {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+      }
+      .tema-oscuro .ejemplo {
+        background-color: #34495e;
+        color: #ecf0f1;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      }
+      .tema-oscuro .codigo {
+        background-color: #2c3e50;
+        color: #e74c3c;
+      }
+      .tema-oscuro .resultado {
+        background-color: #27ae60;
+        color: white;
+      }
+      .tema-oscuro h1,
+      .tema-oscuro h2,
+      .tema-oscuro h3 {
+        color: #3498db;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Estructuras de Control en JavaScript</h1>
+
+    <div class="controles">
+      <button id="cambiarTema">Cambiar Tema (Claro/Oscuro)</button>
+    </div>
+
+    <!-- Ejemplo 1: if/else if/else -->
+    <div class="ejemplo">
+      <h3>if / else if / else</h3>
+      <p>Introduce una calificación (0-100) para ver su evaluación:</p>
+      <div class="controles">
+        <input type="number" id="calificacion" min="0" max="100" value="75" />
+        <button id="evaluarCalificacion">Evaluar</button>
+      </div>
+      <div class="codigo" id="codigoCalificacion">
+        if (calificacion >= 90) { return "Excelente"; } else if (calificacion >=
+        80) { return "Muy Bien"; } else if (calificacion >= 70) { return "Bien";
+        } else if (calificacion >= 60) { return "Suficiente"; } else { return
+        "Insuficiente"; }
+      </div>
+      <div class="resultado" id="resultadoCalificacion"></div>
+    </div>
+
+    <!-- Ejemplo 2: switch -->
+    <div class="ejemplo">
+      <h3>switch</h3>
+      <p>Selecciona un día de la semana:</p>
+      <div class="controles">
+        <select id="diaSemana">
+          <option value="1">Lunes</option>
+          <option value="2">Martes</option>
+          <option value="3">Miércoles</option>
+          <option value="4">Jueves</option>
+          <option value="5">Viernes</option>
+          <option value="6">Sábado</option>
+          <option value="7">Domingo</option>
+        </select>
+        <button id="evaluarDia">Ver Mensaje</button>
+      </div>
+      <div class="codigo" id="codigoDia">
+        switch (parseInt(dia)) { case 1: case 2: case 3: case 4: case 5: return
+        "Es un día laboral"; break; case 6: case 7: return "Es fin de semana";
+        break; default: return "Día inválido"; }
+      </div>
+      <div class="resultado" id="resultadoDia"></div>
+    </div>
+
+    <!-- Ejemplo 3: for -->
+    <div class="ejemplo">
+      <h3>Bucle for</h3>
+      <p>Muestra la tabla de multiplicar del número seleccionado:</p>
+      <div class="controles">
+        <input type="number" id="numeroTabla" min="1" max="20" value="5" />
+        <button id="generarTabla">Generar Tabla</button>
+      </div>
+      <div class="codigo" id="codigoTabla">
+        let tabla = ""; for (let i = 1; i <= 10; i++) { tabla += numero + " x "
+        + i + " = " + (numero * i) + "\\n"; } return tabla;
+      </div>
+      <div class="resultado" id="resultadoTabla"></div>
+    </div>
+
+    <!-- Ejemplo 4: for...of con arrays -->
+    <div class="ejemplo">
+      <h3>Bucle for...of con Arrays</h3>
+      <p>Filtra los números pares de un array:</p>
+      <div class="controles">
+        <input
+          type="text"
+          id="arrayNumeros"
+          value="1,2,3,4,5,6,7,8,9,10"
+          placeholder="Números separados por comas"
+        />
+        <button id="filtrarPares">Filtrar Pares</button>
+      </div>
+      <div class="codigo" id="codigoArray">
+        const numeros = arrayTexto.split(',').map(num => parseInt(num.trim()));
+        const pares = []; for (let num of numeros) { if (num % 2 === 0) {
+        pares.push(num); } } return pares.join(', ');
+      </div>
+      <div class="resultado" id="resultadoArray"></div>
+    </div>
+
+    <!-- Ejemplo 5: while -->
+    <div class="ejemplo">
+      <h3>Bucle while</h3>
+      <p>Calcula el factorial de un número:</p>
+      <div class="controles">
+        <input type="number" id="numeroFactorial" min="0" max="20" value="5" />
+        <button id="calcularFactorial">Calcular</button>
+      </div>
+      <div class="codigo" id="codigoFactorial">
+        let factorial = 1; let i = 1; while (i <= numero) { factorial *= i; i++;
+        } return factorial;
+      </div>
+      <div class="resultado" id="resultadoFactorial"></div>
+    </div>
+
+    <!-- Ejemplo 6: do...while -->
+    <div class="ejemplo">
+      <h3>Bucle do...while</h3>
+      <p>
+        Simula un juego de adivinanzas donde debes adivinar un número entre 1 y
+        10:
+      </p>
+      <div class="controles">
+        <input type="number" id="numeroAdivinanza" min="1" max="10" value="5" />
+        <button id="intentarAdivinar">Intentar</button>
+      </div>
+      <div class="codigo" id="codigoAdivinanza">
+        const numeroSecreto = Math.floor(Math.random() * 10) + 1; let intentos =
+        0; let adivinado = false; let mensaje = ""; do { intentos++; if
+        (intentoUsuario === numeroSecreto) { adivinado = true; mensaje =
+        `¡Correcto! Has adivinado en ${intentos} intento(s).`; } else { mensaje
+        = intentoUsuario > numeroSecreto ? "Demasiado alto, intenta un número
+        menor." : "Demasiado bajo, intenta un número mayor."; } } while
+        (!adivinado); return mensaje;
+      </div>
+      <div class="resultado" id="resultadoAdivinanza"></div>
+    </div>
+
+    <!-- Ejemplo 7: try...catch -->
+    <div class="ejemplo">
+      <h3>try...catch para manejo de errores</h3>
+      <p>
+        Ingresa dos números para dividir (observa qué ocurre al dividir por
+        cero):
+      </p>
+      <div class="controles">
+        <input
+          type="number"
+          id="numeroDividendo"
+          placeholder="Dividendo"
+          value="10"
+        />
+        <input
+          type="number"
+          id="numeroDivisor"
+          placeholder="Divisor"
+          value="2"
+        />
+        <button id="calcularDivision">Dividir</button>
+      </div>
+      <div class="codigo" id="codigoDivision">
+        try { if (divisor === 0) { throw new Error("No se puede dividir por
+        cero"); } return dividendo / divisor; } catch (error) { return "Error: "
+        + error.message; }
+      </div>
+      <div class="resultado" id="resultadoDivision"></div>
+    </div>
+
+    <script>
+      // Función para cambiar tema
+      document
+        .getElementById("cambiarTema")
+        .addEventListener("click", function () {
+          document.body.classList.toggle("tema-oscuro");
+        });
+
+      // Ejemplo 1: if/else if/else
+      document
+        .getElementById("evaluarCalificacion")
+        .addEventListener("click", function () {
+          const calificacion = parseInt(
+            document.getElementById("calificacion").value
+          );
+          let resultado;
+
+          if (calificacion >= 90) {
+            resultado = "Excelente";
+          } else if (calificacion >= 80) {
+            resultado = "Muy Bien";
+          } else if (calificacion >= 70) {
+            resultado = "Bien";
+          } else if (calificacion >= 60) {
+            resultado = "Suficiente";
+          } else {
+            resultado = "Insuficiente";
+          }
+
+          document.getElementById(
+            "resultadoCalificacion"
+          ).textContent = `Resultado: ${resultado}`;
+        });
+
+      // Ejemplo 2: switch
+      document
+        .getElementById("evaluarDia")
+        .addEventListener("click", function () {
+          const dia = document.getElementById("diaSemana").value;
+          let resultado;
+
+          switch (parseInt(dia)) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+              resultado = "Es un día laboral";
+              break;
+            case 6:
+            case 7:
+              resultado = "Es fin de semana";
+              break;
+            default:
+              resultado = "Día inválido";
+          }
+
+          document.getElementById(
+            "resultadoDia"
+          ).textContent = `Resultado: ${resultado}`;
+        });
+
+      // Ejemplo 3: for
+      document
+        .getElementById("generarTabla")
+        .addEventListener("click", function () {
+          const numero = parseInt(document.getElementById("numeroTabla").value);
+          let tabla = "";
+
+          for (let i = 1; i <= 10; i++) {
+            tabla += `${numero} x ${i} = ${numero * i}\n`;
+          }
+
+          document.getElementById("resultadoTabla").textContent = tabla;
+        });
+
+      // Ejemplo 4: for...of con arrays
+      document
+        .getElementById("filtrarPares")
+        .addEventListener("click", function () {
+          const arrayTexto = document.getElementById("arrayNumeros").value;
+          const numeros = arrayTexto
+            .split(",")
+            .map((num) => parseInt(num.trim()));
+          const pares = [];
+
+          for (let num of numeros) {
+            if (num % 2 === 0) {
+              pares.push(num);
+            }
+          }
+
+          document.getElementById(
+            "resultadoArray"
+          ).textContent = `Números pares: ${pares.join(", ")}`;
+        });
+
+      // Ejemplo 5: while
+      document
+        .getElementById("calcularFactorial")
+        .addEventListener("click", function () {
+          const numero = parseInt(
+            document.getElementById("numeroFactorial").value
+          );
+          let factorial = 1;
+          let i = 1;
+
+          while (i <= numero) {
+            factorial *= i;
+            i++;
+          }
+
+          document.getElementById(
+            "resultadoFactorial"
+          ).textContent = `El factorial de ${numero} es: ${factorial}`;
+        });
+
+      // Ejemplo 6: do...while (simulación simplificada)
+      document
+        .getElementById("intentarAdivinar")
+        .addEventListener("click", function () {
+          const intentoUsuario = parseInt(
+            document.getElementById("numeroAdivinanza").value
+          );
+          const numeroSecreto = Math.floor(Math.random() * 10) + 1;
+
+          let resultado = `El número secreto era: ${numeroSecreto}. `;
+
+          if (intentoUsuario === numeroSecreto) {
+            resultado += "¡Has adivinado correctamente!";
+          } else {
+            resultado +=
+              intentoUsuario > numeroSecreto
+                ? "Tu número es demasiado alto."
+                : "Tu número es demasiado bajo.";
+          }
+
+          document.getElementById("resultadoAdivinanza").textContent =
+            resultado;
+        });
+
+      // Ejemplo 7: try...catch
+      document
+        .getElementById("calcularDivision")
+        .addEventListener("click", function () {
+          const dividendo = parseInt(
+            document.getElementById("numeroDividendo").value
+          );
+          const divisor = parseInt(
+            document.getElementById("numeroDivisor").value
+          );
+          let resultado;
+
+          try {
+            if (divisor === 0) {
+              throw new Error("No se puede dividir por cero");
+            }
+            resultado = dividendo / divisor;
+          } catch (error) {
+            resultado = "Error: " + error.message;
+          }
+
+          document.getElementById(
+            "resultadoDivision"
+          ).textContent = `Resultado: ${resultado}`;
+        });
+
+      // Inicializar los ejemplos al cargar
+      document.getElementById("evaluarCalificacion").click();
+      document.getElementById("evaluarDia").click();
+      document.getElementById("generarTabla").click();
+      document.getElementById("filtrarPares").click();
+      document.getElementById("calcularFactorial").click();
+      document.getElementById("intentarAdivinar").click();
+      document.getElementById("calcularDivision").click();
+    </script>
+  </body>
+</html>
