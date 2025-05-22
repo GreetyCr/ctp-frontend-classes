@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programación Funcional en JavaScript</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #333;
+      line-height: 1.6;
+    }
+    .section {
+      margin-bottom: 30px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #3498db;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 0;
+    }
+    pre {
+      background-color: #f1f1f1;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .code-result {
+      background-color: #e8f4f8;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 10px;
+      border-left: 4px solid #3498db;
+    }
+    .react-comparison {
+      background-color: #e8f8f5;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 15px;
+      border-left: 4px solid #2ecc71;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .success {
+      color: #27ae60;
+    }
+    .warning {
+      color: #e74c3c;
+    }
+    .todo-container {
+      margin-top: 20px;
+    }
+    .todo-app {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      background-color: #fff;
+    }
+    .todo-header {
+      margin-bottom: 20px;
+    }
+    .todo-input {
+      display: flex;
+      margin-bottom: 15px;
+    }
+    .todo-input input {
+      flex-grow: 1;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px 0 0 4px;
+    }
+    .todo-input button {
+      border-radius: 0 4px 4px 0;
+      margin-top: 0;
+    }
+    .todo-list {
+      list-style: none;
+      padding: 0;
+    }
+    .todo-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background-color: #f9f9f9;
+      margin-bottom: 8px;
+      border-radius: 4px;
+      border-left: 3px solid #3498db;
+    }
+    .todo-item.completed {
+      border-left-color: #27ae60;
+    }
+    .todo-item span {
+      flex-grow: 1;
+      margin: 0 10px;
+    }
+    .todo-item.completed span {
+      text-decoration: line-through;
+      color: #7f8c8d;
+    }
+    .delete-btn {
+      background-color: #e74c3c;
+      padding: 5px 10px;
+    }
+    .todo-stats {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #7f8c8d;
+    }
+  </style>
+</head>
+<body>
+  <h1>Programación Funcional en JavaScript</h1>
+
+  <!-- Inmutabilidad -->
+  <div class="section">
+    <h2>Inmutabilidad</h2>
+    <p>La inmutabilidad es el principio de no modificar datos directamente, sino crear nuevas versiones con los cambios.</p>
+
+    <pre>
+// ❌ Enfoque mutable (evitar)
+const addItemMutable = (array, item) => {
+  array.push(item);
+  return array;
+};
+
+// ✅ Enfoque inmutable
+const addItemImmutable = (array, item) => {
+  return [...array, item];
+};
+
+// ❌ Modificar objeto (evitar)
+const updateUserMutable = (user, property, value) => {
+  user[property] = value;
+  return user;
+};
+
+// ✅ Crear nuevo objeto con cambios
+const updateUserImmutable = (user, property, value) => {
+  return {
+    ...user,
+    [property]: value
+  };
+};
+    </pre>
+    
+    <button onclick="probarInmutabilidad()">Probar Inmutabilidad</button>
+    <div id="inmutabilidad-result" class="code-result"></div>
+    
+    <div class="react-comparison">
+      <strong>Comparación con React:</strong> React depende de la inmutabilidad para determinar cuándo actualizar el UI.
+      <pre>
+// En React (actualización correcta)
+const [todos, setTodos] = useState([
+  { id: 1, text: 'Aprender React', completed: false }
+]);
+
+// Actualización incorrecta (mutable)
+const toggleBad = (id) => {
+  todos.forEach(todo => {
+    if (todo.id === id) {
+      todo.completed = !todo.completed; // ❌ Mutación directa
+    }
+  });
+  setTodos(todos); // React no detecta el cambio
+};
+
+// Actualización correcta (inmutable)
+const toggleGood = (id) => {
+  const newTodos = todos.map(todo => 
+    todo.id === id 
+      ? { ...todo, completed: !todo.completed } // ✅ Nuevo objeto
+      : todo
+  );
+  setTodos(newTodos); // React detecta el cambio
+};
+      </pre>
+    </div>
+  </div>
+
+  <!-- Funciones Puras -->
+  <div class="section">
+    <h2>Funciones Puras</h2>
+    <p>Una función pura devuelve siempre el mismo resultado para los mismos argumentos y no tiene efectos secundarios.</p>
+
+    <pre>
+// ❌ Función impura (depende de estado externo)
+let counter = 0;
+const incrementImpure = () => {
+  counter++;
+  return counter;
+};
+
+// ❌ Función impura (modifica el argumento)
+const addItemImpure = (array, item) => {
+  array.push(item);
+  return array;
+};
+
+// ✅ Función pura
+const sum = (a, b) => a + b;
+
+// ✅ Función pura (no modifica args)
+const addItemPure = (array, item) => [...array, item];
+
+// ✅ Función pura que maneja objetos
+const updateObject = (obj, key, value) => ({
+  ...obj,
+  [key]: value
+});
+    </pre>
+    
+    <button onclick="probarFuncionesPuras()">Probar Funciones Puras</button>
+    <div id="funciones-puras-result" class="code-result"></div>
+    
+    <div class="react-comparison">
+      <strong>Comparación con React:</strong> Los componentes y reducers deben comportarse como funciones puras.
+      <pre>
+// Componente funcional puro
+function Greeting({ name }) {
+  return &lt;h1>Hola, {name}!&lt;/h1>;
+}
+
+// Reducer puro para useReducer
+function todoReducer(state, action) {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return [...state, {
+        id: Date.now(),
+        text: action.payload,
+        completed: false
+      }];
+    case 'TOGGLE_TODO':
+      return state.map(todo =>
+        todo.id === action.payload
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      );
+    default:
+      return state;
+  }
+}
+      </pre>
+    </div>
+  </div>
+
+  <!-- Funciones de Orden Superior (HOF) -->
+  <div class="section">
+    <h2>Funciones de Orden Superior</h2>
+    <p>Funciones que reciben o devuelven otras funciones.</p>
+
+    <pre>
+// Función que devuelve una función
+const multiplicador = (factor) => {
+  return (numero) => numero * factor;
+};
+
+const duplicar = multiplicador(2);
+const triplicar = multiplicador(3);
+
+// Función que acepta una función como argumento
+const ejecutar = (valor, funcion) => {
+  return funcion(valor);
+};
+
+// Compositores de funciones
+const componer = (...funciones) => (valor) => {
+  return funciones.reduceRight((resultado, funcion) => {
+    return funcion(resultado);
+  }, valor);
+};
+
+const sumar2 = (x) => x + 2;
+const multiplicarPor3 = (x) => x * 3;
+const restar1 = (x) => x - 1;
+
+const operacionCompuesta = componer(
+  restar1,
+  multiplicarPor3,
+  sumar2
+);
+// operacionCompuesta(5) = restar1(multiplicarPor3(sumar2(5)))
+// = restar1(multiplicarPor3(7)) = restar1(21) = 20
+    </pre>
+    
+    <button onclick="probarHOF()">Probar Funciones de Orden Superior</button>
+    <div id="hof-result" class="code-result"></div>
+    
+    <div class="react-comparison">
+      <strong>Comparación con React:</strong> Los HOC (High Order Components) y hooks como useMemo y useCallback son ejemplos de funciones de orden superior.
+      <pre>
+// HOC en React
+function withAuth(Component) {
+  return function AuthenticatedComponent(props) {
+    const isAuth = checkAuthStatus(); // Función hipotética
+    
+    if (!isAuth) {
+      return &lt;Redirect to="/login" />;
+    }
+    
+    return &lt;Component {...props} />;
+  };
+}
+
+const ProtectedDashboard = withAuth(Dashboard);
+
+// Hooks como funciones de orden superior
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+    
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [value, delay]);
+  
+  return debouncedValue;
+}
+      </pre>
+    </div>
+  </div>
+
+  <!-- Map, Filter, Reduce -->
+  <div class="section">
+    <h2>Map, Filter, Reduce</h2>
+    <p>Operaciones fundamentales para la transformación funcional de datos.</p>
+
+    <pre>
+const productos = [
+  { id: 1, nombre: 'Laptop', precio: 800, categoria: 'Electrónica' },
+  { id: 2, nombre: 'Camiseta', precio: 20, categoria: 'Ropa' },
+  { id: 3, nombre: 'Libro JavaScript', precio: 40, categoria: 'Libros' },
+  { id: 4, nombre: 'Tablet', precio: 300, categoria: 'Electrónica' },
+  { id: 5, nombre: 'Pantalones', precio: 50, categoria: 'Ropa' }
+];
+
+// Map: transformar cada elemento
+const nombresProductos = productos.map(p => p.nombre);
+const productosConDescuento = productos.map(p => ({
+  ...p,
+  precioConDescuento: p.precio * 0.9
+}));
+
+// Filter: seleccionar elementos según criterio
+const productosElectronicos = productos.filter(
+  p => p.categoria === 'Electrónica'
+);
+const productosCaros = productos.filter(p => p.precio > 100);
+
+// Reduce: acumular valores
+const precioTotal = productos.reduce(
+  (total, producto) => total + producto.precio,
+  0
+);
+const productosPorCategoria = productos.reduce((acc, producto) => {
+  if (!acc[producto.categoria]) {
+    acc[producto.categoria] = [];
+  }
+  acc[producto.categoria].push(producto);
+  return acc;
+}, {});
+
+// Encadenando operaciones
+const totalProductosElectronicos = productos
+  .filter(p => p.categoria === 'Electrónica')
+  .reduce((total, p) => total + p.precio, 0);
+    </pre>
+    
+    <button onclick="probarMapFilterReduce()">Probar Map, Filter, Reduce</button>
+    <div id="mapfilterreduce-result" class="code-result"></div>
+    
+    <div class="react-comparison">
+      <strong>Comparación con React:</strong> Estas operaciones son esenciales para manipular datos en React.
+      <pre>
+function ProductList({ products, category, maxPrice }) {
+  // Filtrar y transformar datos
+  const filteredProducts = products
+    .filter(p => !category || p.category === category)
+    .filter(p => !maxPrice || p.price <= maxPrice)
+    .map(p => ({
+      ...p,
+      discountPrice: p.price * 0.9
+    }));
+    
+  // Calcular totales
+  const totalPrice = filteredProducts.reduce((sum, p) => sum + p.price, 0);
+  
+  return (
+    &lt;div>
+      &lt;h2>Productos ({filteredProducts.length}):&lt;/h2>
+      &lt;p>Precio total: ${totalPrice}&lt;/p>
+      
+      &lt;ul>
+        {filteredProducts.map(product => (
+          &lt;li key={product.id}>
+            {product.name} - ${product.price}
+            {' '}(con descuento: ${product.discountPrice})
+          &lt;/li>
+        ))}
+      &lt;/ul>
+    &lt;/div>
+  );
+}
+      </pre>
+    </div>
+  </div>
+
+  <!-- Aplicación Práctica: Lista de Tareas con Enfoque Funcional -->
+  <div class="section">
+    <h2>Aplicación Práctica: Lista de Tareas con Enfoque Funcional</h2>
+    <p>Una aplicación de lista de tareas implementada con principios de programación funcional.</p>
+    
+    <div id="todo-app" class="todo-container"></div>
+    
+    <div class="react-comparison">
+      <strong>Comparación con React:</strong> Esta implementación se asemeja al modelo mental de React, pero con desventajas:
+      <ul>
+        <li>En React, el estado se manejaría con hooks (useState, useReducer)</li>
+        <li>React renderizaría solo lo que cambia, no toda la UI</li>
+        <li>React implementaría componentes reutilizables por separado</li>
+        <li>React manejaría automáticamente los event listeners</li>
+      </ul>
+      <pre>
+// En React (versión simplificada)
+function TodoApp() {
+  const [todos, setTodos] = useState([]);
+  const [inputText, setInputText] = useState('');
+  
+  const addTodo = () => {
+    if (inputText.trim()) {
+      setTodos([...todos, {
+        id: Date.now(),
+        text: inputText,
+        completed: false
+      }]);
+      setInputText('');
+    }
+  };
+  
+  const toggleTodo = (id) => {
+    setTodos(todos.map(todo => 
+      todo.id === id 
+        ? { ...todo, completed: !todo.completed } 
+        : todo
+    ));
+  };
+  
+  const deleteTodo = (id) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
+  
+  return (
+    &lt;div>
+      &lt;input 
+        value={inputText}
+        onChange={e => setInputText(e.target.value)}
+      />
+      &lt;button onClick={addTodo}>Añadir&lt;/button>
+      
+      &lt;ul>
+        {todos.map(todo => (
+          &lt;li key={todo.id}>
+            &lt;input
+              type="checkbox"
+              checked={todo.completed}
+              onChange={() => toggleTodo(todo.id)}
+            />
+            &lt;span>{todo.text}&lt;/span>
+            &lt;button onClick={() => deleteTodo(todo.id)}>
+              Eliminar
+            &lt;/button>
+          &lt;/li>
+        ))}
+      &lt;/ul>
+    &lt;/div>
+  );
+}
+      </pre>
+    </div>
+  </div>
+
+  <script>
+    // Inmutabilidad
+    function probarInmutabilidad() {
+      const resultDiv = document.getElementById('inmutabilidad-result');
+      
+      // Enfoque mutable vs inmutable con arrays
+      const array1 = [1, 2, 3];
+      const array2 = [1, 2, 3];
+      
+      const addItemMutable = (array, item) => {
+        array.push(item);
+        return array;
+      };
+      
+      const addItemImmutable = (array, item) => {
+        return [...array, item];
+      };
+      
+      const resultado1 = addItemMutable(array1, 4);
+      const resultado2 = addItemImmutable(array2, 4);
+      
+      // Enfoque mutable vs inmutable con objetos
+      const user1 = { name: 'Ana', age: 28 };
+      const user2 = { name: 'Ana', age: 28 };
+      
+      const updateUserMutable = (user, property, value) => {
+        user[property] = value;
+        return user;
+      };
+      
+      const updateUserImmutable = (user, property, value) => {
+        return {
+          ...user,
+          [property]: value
+        };
+      };
+      
+      const updatedUser1 = updateUserMutable(user1, 'age', 29);
+      const updatedUser2 = updateUserImmutable(user2, 'age', 29);
+      
+      resultDiv.innerHTML = `
+        <p><strong>Con Arrays:</strong></p>
+        <p>Array original 1 (después de mutación): [${array1}]</p>
+        <p>Resultado 1 (con mutación): [${resultado1}]</p>
+        <p>¿Son el mismo objeto? ${array1 === resultado1 ? '<span class="warning">Sí (problemas potenciales)</span>' : 'No'}</p>
+        
+        <p><strong>Con Arrays Inmutables:</strong></p>
+        <p>Array original 2 (sin cambios): [${array2}]</p>
+        <p>Resultado 2 (sin mutación): [${resultado2}]</p>
+        <p>¿Son el mismo objeto? ${array2 === resultado2 ? 'Sí' : '<span class="success">No (seguro)</span>'}</p>
+        
+        <p><strong>Con Objetos:</strong></p>
+        <p>Usuario original 1 (después de mutación): ${JSON.stringify(user1)}</p>
+        <p>Usuario actualizado 1 (con mutación): ${JSON.stringify(updatedUser1)}</p>
+        <p>¿Son el mismo objeto? ${user1 === updatedUser1 ? '<span class="warning">Sí (problemas potenciales)</span>' : 'No'}</p>
+        
+        <p><strong>Con Objetos Inmutables:</strong></p>
+        <p>Usuario original 2 (sin cambios): ${JSON.stringify(user2)}</p>
+        <p>Usuario actualizado 2 (sin mutación): ${JSON.stringify(updatedUser2)}</p>
+        <p>¿Son el mismo objeto? ${user2 === updatedUser2 ? 'Sí' : '<span class="success">No (seguro)</span>'}</p>
+      `;
+    }
+    
+    // Funciones Puras
+    function probarFuncionesPuras() {
+      const resultDiv = document.getElementById('funciones-puras-result');
+      
+      // Función impura con estado
+      let counter = 0;
+      const incrementImpure = () => {
+        counter++;
+        return counter;
+      };
+      
+      // Función pura
+      const sum = (a, b) => a + b;
+      
+      // Función pura que maneja objetos
+      const updateObject = (obj, key, value) => ({
+        ...obj,
+        [key]: value
+      });
+      
+      // Función pura vs impura con arrays
+      const arr1 = [1, 2, 3];
+      const arr2 = [1, 2, 3];
+      
+      const addItemImpure = (array, item) => {
+        array.push(item);
+        return array;
+      };
+      
+      const addItemPure = (array, item) => [...array, item];
+      
+      const result1 = addItemImpure(arr1, 4);
+      const result2 = addItemPure(arr2, 4);
+      
+      // Resultados
+      resultDiv.innerHTML = `
+        <p><strong>Función Impura (con estado):</strong></p>
+        <p>Primera llamada: ${incrementImpure()}</p>
+        <p>Segunda llamada: ${incrementImpure()}</p>
+        <p>Tercera llamada: ${incrementImpure()}</p>
+        <p class="warning">Las llamadas producen resultados diferentes con los mismos argumentos.</p>
+        
+        <p><strong>Función Pura:</strong></p>
+        <p>Primera llamada a sum(2, 3): ${sum(2, 3)}</p>
+        <p>Segunda llamada a sum(2, 3): ${sum(2, 3)}</p>
+        <p class="success">Las llamadas producen el mismo resultado con los mismos argumentos.</p>
+        
+        <p><strong>Función Impura (modifica argumentos):</strong></p>
+        <p>Array original después de llamada: [${arr1}]</p>
+        <p>Resultado: [${result1}]</p>
+        <p>¿Modificó el argumento? ${arr1[3] === 4 ? '<span class="warning">Sí (efecto secundario)</span>' : 'No'}</p>
+        
+        <p><strong>Función Pura con objetos:</strong></p>
+        <p>Objeto antes: ${JSON.stringify({ name: 'Ana' })}</p>
+        <p>Objeto después: ${JSON.stringify(updateObject({ name: 'Ana' }, 'age', 30))}</p>
+        <p class="success">El objeto original no se modifica.</p>
+      `;
+    }
+    
+    // Funciones de Orden Superior
+    function probarHOF() {
+      const resultDiv = document.getElementById('hof-result');
+      
+      // Función que retorna una función
+      const multiplicador = (factor) => {
+        return (numero) => numero * factor;
+      };
+      
+      const duplicar = multiplicador(2);
+      const triplicar = multiplicador(3);
+      
+      // Función que acepta una función
+      const ejecutar = (valor, funcion) => {
+        return funcion(valor);
+      };
+      
+      // Compositor de funciones
+      const componer = (...funciones) => (valor) => {
+        return funciones.reduceRight((resultado, funcion) => {
+          return funcion(resultado);
+        }, valor);
+      };
+      
+      // Funciones para composición
+      const sumar2 = (x) => x + 2;
+      const multiplicarPor3 = (x) => x * 3;
+      const restar1 = (x) => x - 1;
+      
+      const operacionCompuesta = componer(
+        restar1,
+        multiplicarPor3,
+        sumar2
+      );
+      
+      // Memorización con HOF
+      const memoize = (fn) => {
+        const cache = {};
+        return (...args) => {
+          const key = JSON.stringify(args);
+          if (cache[key] === undefined) {
+            cache[key] = fn(...args);
+          }
+          return cache[key];
+        };
+      };
+      
+      const factorial = (n) => {
+        if (n <= 1) return 1;
+        return n * factorial(n - 1);
+      };
+      
+      const factorialMemoizado = memoize(factorial);
+      
+      // Resultados
+      resultDiv.innerHTML = `
+        <p><strong>Función que retorna función:</strong></p>
+        <p>duplicar(5): ${duplicar(5)}</p>
+        <p>triplicar(5): ${triplicar(5)}</p>
+        
+        <p><strong>Función que recibe función:</strong></p>
+        <p>ejecutar(5, duplicar): ${ejecutar(5, duplicar)}</p>
+        <p>ejecutar(10, x => x * x): ${ejecutar(10, x => x * x)}</p>
+        
+        <p><strong>Composición de funciones:</strong></p>
+        <p>operacionCompuesta(5): ${operacionCompuesta(5)}</p>
+        <p>Equivale a: restar1(multiplicarPor3(sumar2(5)))</p>
+        <p>= restar1(multiplicarPor3(7))</p>
+        <p>= restar1(21)</p>
+        <p>= 20</p>
+        
+        <p><strong>Memoización:</strong></p>
+        <p>Primera llamada factorial(10): ${factorialMemoizado(10)}</p>
+        <p>Segunda llamada factorial(10): ${factorialMemoizado(10)} (recuperado de caché)</p>
+      `;
+    }
+    
+    // Map, Filter, Reduce
+    function probarMapFilterReduce() {
+      const resultDiv = document.getElementById('mapfilterreduce-result');
+      
+      const productos = [
+        { id: 1, nombre: 'Laptop', precio: 800, categoria: 'Electrónica' },
+        { id: 2, nombre: 'Camiseta', precio: 20, categoria: 'Ropa' },
+        { id: 3, nombre: 'Libro JavaScript', precio: 40, categoria: 'Libros' },
+        { id: 4, nombre: 'Tablet', precio: 300, categoria: 'Electrónica' },
+        { id: 5, nombre: 'Pantalones', precio: 50, categoria: 'Ropa' }
+      ];
+      
+      // Map
+      const nombresProductos = productos.map(p => p.nombre);
+      const productosConDescuento = productos.map(p => ({
+        ...p,
+        precioConDescuento: p.precio * 0.9
+      }));
+      
+      // Filter
+      const productosElectronicos = productos.filter(
+        p => p.categoria === 'Electrónica'
+      );
+      const productosCaros = productos.filter(p => p.precio > 100);
+      
+      // Reduce
+      const precioTotal = productos.reduce(
+        (total, producto) => total + producto.precio,
+        0
+      );
+      const productosPorCategoria = productos.reduce((acc, producto) => {
+        if (!acc[producto.categoria]) {
+          acc[producto.categoria] = [];
+        }
+        acc[producto.categoria].push(producto);
+        return acc;
+      }, {});
+      
+      // Combinando operaciones
+      const totalProductosElectronicos = productos
+        .filter(p => p.categoria === 'Electrónica')
+        .reduce((total, p) => total + p.precio, 0);
+      
+      // Combinación avanzada
+      const informePorCategoria = Object.entries(productosPorCategoria).map(
+        ([categoria, productos]) => ({
+          categoria,
+          cantidad: productos.length,
+          valorTotal: productos.reduce((sum, p) => sum + p.precio, 0),
+          productoMasCaro: productos.reduce(
+            (max, p) => (p.precio > max.precio ? p : max),
+            { precio: 0 }
+          ).nombre
+        })
+      );
+      
+      // Resultados
+      resultDiv.innerHTML = `
+        <p><strong>Map:</strong></p>
+        <p>Nombres de productos: ${nombresProductos.join(', ')}</p>
+        <p>Primer producto con descuento: ${JSON.stringify(productosConDescuento[0])}</p>
+        
+        <p><strong>Filter:</strong></p>
+        <p>Productos electrónicos: ${productosElectronicos.map(p => p.nombre).join(', ')}</p>
+        <p>Productos caros (>$100): ${productosCaros.map(p => p.nombre).join(', ')}</p>
+        
+        <p><strong>Reduce:</strong></p>
+        <p>Precio total de todos los productos: $${precioTotal}</p>
+        <p>Categorías: ${Object.keys(productosPorCategoria).join(', ')}</p>
+        
+        <p><strong>Combinando operaciones:</strong></p>
+        <p>Total productos electrónicos: $${totalProductosElectronicos}</p>
+        
+        <p><strong>Informe por categoría:</strong></p>
+        <ul>
+          ${informePorCategoria.map(info => `
+            <li>
+              <strong>${info.categoria}</strong>: 
+              ${info.cantidad} productos, 
+              valor total: $${info.valorTotal},
+              producto más caro: ${info.productoMasCaro}
+            </li>
+          `).join('')}
+        </ul>
+      `;
+    }
+    
+    // Aplicación de Todo List con enfoque funcional
+    const TodoApp = (() => {
+      // Estado global de la aplicación
+      let state = {
+        todos: [
+          { id: 1, text: 'Aprender programación funcional', completed: false },
+          { id: 2, text: 'Practicar con ejemplos', completed: true },
+          { id: 3, text: 'Implementar en proyectos', completed: false }
+        ]
+      };
+      
+      // Funciones puras para manipular el estado
+      const actions = {
+        // Añadir una tarea
+        addTodo: (state, text) => ({
+          ...state,
+          todos: [
+            ...state.todos,
+            { id: Date.now(), text, completed: false }
+          ]
+        }),
+        
+        // Eliminar una tarea
+        deleteTodo: (state, id) => ({
+          ...state,
+          todos: state.todos.filter(todo => todo.id !== id)
+        }),
+        
+        // Marcar como completada/pendiente
+        toggleTodo: (state, id) => ({
+          ...state,
+          todos: state.todos.map(todo => 
+            todo.id === id 
+              ? { ...todo, completed: !todo.completed }
+              : todo
+          )
+        })
+      };
+      
+      // Renderiza la interfaz basada en el estado
+      const render = () => {
+        const appElement = document.getElementById('todo-app');
+        const { todos } = state;
+        
+        const completedCount = todos.filter(todo => todo.completed).length;
+        
+        appElement.innerHTML = `
+          <div class="todo-app">
+            <div class="todo-header">
+              <h3>Lista de Tareas (Enfoque Funcional)</h3>
+              <p>Implementada con principios de programación funcional.</p>
+            </div>
+            
+            <div class="todo-input">
+              <input type="text" id="todo-input" placeholder="Nueva tarea...">
+              <button id="add-todo">Añadir</button>
+            </div>
+            
+            <ul class="todo-list">
+              ${todos.map(todo => `
+                <li class="todo-item ${todo.completed ? 'completed' : ''}">
+                  <input 
+                    type="checkbox" 
+                    data-id="${todo.id}" 
+                    ${todo.completed ? 'checked' : ''}
+                  >
+                  <span>${todo.text}</span>
+                  <button class="delete-btn" data-id="${todo.id}">Eliminar</button>
+                </li>
+              `).join('')}
+            </ul>
+            
+            <div class="todo-stats">
+              <p>${completedCount} de ${todos.length} tareas completadas</p>
+            </div>
+          </div>
+        `;
+        
+        // Añadir manejadores de eventos
+        addEventListeners();
+      };
+      
+      // Manejadores de eventos (efectos secundarios controlados)
+      const addEventListeners = () => {
+        // Añadir tarea
+        document.getElementById('add-todo').addEventListener('click', () => {
+          const input = document.getElementById('todo-input');
+          const text = input.value.trim();
+          
+          if (text) {
+            // Actualizar estado inmutablemente
+            state = actions.addTodo(state, text);
+            input.value = '';
+            render();
+          }
+        });
+        
+        // Eliminar tarea
+        document.querySelectorAll('.delete-btn').forEach(button => {
+          button.addEventListener('click', (e) => {
+            const id = parseInt(e.target.dataset.id);
+            state = actions.deleteTodo(state, id);
+            render();
+          });
+        });
+        
+        // Marcar como completada
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+          checkbox.addEventListener('change', (e) => {
+            const id = parseInt(e.target.dataset.id);
+            state = actions.toggleTodo(state, id);
+            render();
+          });
+        });
+        
+        // Añadir con tecla Enter
+        document.getElementById('todo-input').addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            const text = e.target.value.trim();
+            
+            if (text) {
+              state = actions.addTodo(state, text);
+              e.target.value = '';
+              render();
+            }
+          }
+        });
+      };
+      
+      // Inicializar
+      const init = () => {
+        render();
+      };
+      
+      return { init };
+    })();
+    
+    // Inicializar la aplicación
+    document.addEventListener('DOMContentLoaded', () => {
+      probarInmutabilidad();
+      probarFuncionesPuras();
+      probarHOF();
+      probarMapFilterReduce();
+      TodoApp.init();
+    });
+  </script>
+</body>
+</html> 

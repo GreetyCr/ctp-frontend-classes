@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manejo de Estado en JavaScript</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #333;
+      line-height: 1.6;
+    }
+    .section {
+      margin-bottom: 30px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #3498db;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 0;
+    }
+    .react-comparison {
+      background-color: #e8f8f5;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 15px;
+      border-left: 4px solid #2ecc71;
+    }
+    pre {
+      background-color: #f1f1f1;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .app-container {
+      display: flex;
+      margin-top: 20px;
+    }
+    .app-panel {
+      flex: 1;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      background-color: #fff;
+      margin-right: 10px;
+    }
+    .state-panel {
+      flex: 1;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      margin-left: 10px;
+      position: relative;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .btn-danger {
+      background-color: #e74c3c;
+    }
+    .btn-danger:hover {
+      background-color: #c0392b;
+    }
+    .btn-success {
+      background-color: #2ecc71;
+    }
+    .btn-success:hover {
+      background-color: #27ae60;
+    }
+    input[type="text"] {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+    .todo-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+    .todo-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background-color: #f9f9f9;
+      margin-bottom: 8px;
+      border-radius: 4px;
+      border-left: 3px solid #3498db;
+    }
+    .todo-item.completed {
+      border-left-color: #27ae60;
+    }
+    .todo-item input[type="checkbox"] {
+      margin-right: 10px;
+    }
+    .todo-text {
+      flex-grow: 1;
+    }
+    .todo-item.completed .todo-text {
+      text-decoration: line-through;
+      color: #7f8c8d;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+    .counter-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .counter-display {
+      font-size: 24px;
+      font-weight: bold;
+      padding: 0 15px;
+    }
+    .history-log {
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    .history-log p {
+      margin: 5px 0;
+      padding: 5px;
+      border-radius: 3px;
+    }
+    .history-log p:nth-child(odd) {
+      background-color: #e8e8e8;
+    }
+    .time-travel {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+    .action-preview {
+      font-family: monospace;
+      color: #2980b9;
+    }
+    .section-title {
+      margin-top: 0;
+      color: #3498db;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Manejo de Estado en JavaScript</h1>
+
+  <!-- Sección principal -->
+  <div class="section">
+    <h2>Implementación con Patrón Reducer</h2>
+    <p>El patrón Reducer es una forma moderna y predecible de manejar el estado en aplicaciones JavaScript. Este patrón es la base de librerías como Redux y hooks como useReducer en React.</p>
+    
+    <div class="app-container">
+      <!-- Panel de aplicación -->
+      <div class="app-panel">
+        <h3 class="section-title">Aplicación</h3>
+        
+        <!-- Contador -->
+        <div id="counter-section">
+          <h4>Contador</h4>
+          <div class="counter-controls">
+            <button id="decrement-btn" class="btn-danger">-</button>
+            <span id="counter-display" class="counter-display">0</span>
+            <button id="increment-btn">+</button>
+            <button id="increment-by-btn">+5</button>
+          </div>
+        </div>
+        
+        <!-- Lista de tareas -->
+        <div id="todo-section">
+          <h4>Lista de Tareas</h4>
+          <div>
+            <input type="text" id="todo-input" placeholder="Añadir nueva tarea...">
+            <button id="add-todo-btn">Añadir Tarea</button>
+          </div>
+          <ul id="todo-list" class="todo-list">
+            <!-- Las tareas se renderizarán aquí -->
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Panel de estado -->
+      <div class="state-panel">
+        <h3 class="section-title">Estado y Acciones</h3>
+        <div id="current-state-display">
+          <h4>Estado Actual:</h4>
+          <pre id="state-json"></pre>
+        </div>
+        
+        <div id="action-preview">
+          <h4>Última Acción:</h4>
+          <pre id="action-json" class="action-preview"></pre>
+        </div>
+        
+        <h4>Historial de Acciones:</h4>
+        <div id="history-log" class="history-log">
+          <!-- El historial se renderizará aquí -->
+        </div>
+        
+        <div class="time-travel">
+          <button id="time-travel-btn" class="btn-success">Viajar en el Tiempo</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="react-comparison">
+      <strong>Comparación con React:</strong> Este ejemplo implementa un patrón similar a cómo useReducer funciona en React, creando un fundamento sólido para la transición. En React, el código equivalente sería:
+
+      <pre>
+import { useReducer } from 'react';
+
+// El mismo reducer que tenemos aquí
+function reducer(state, action) {
+  switch (action.type) {
+    case 'INCREMENT':
+      return { ...state, counter: state.counter + (action.payload || 1) };
+    // otros casos...
+  }
+}
+
+function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    &lt;div>
+      &lt;h2>Contador: {state.counter}&lt;/h2>
+      &lt;button onClick={() => dispatch({ type: 'DECREMENT' })}>-&lt;/button>
+      &lt;button onClick={() => dispatch({ type: 'INCREMENT' })}>+&lt;/button>
+      
+      {/* Lista de tareas */}
+      &lt;input 
+        value={inputText}
+        onChange={(e) => setInputText(e.target.value)}
+      />
+      &lt;button onClick={() => {
+        dispatch({ type: 'ADD_TODO', payload: inputText });
+        setInputText('');
+      }}>
+        Añadir
+      &lt;/button>
+      
+      &lt;ul>
+        {state.todos.map(todo => (
+          &lt;li key={todo.id}>
+            &lt;input
+              type="checkbox"
+              checked={todo.completed}
+              onChange={() => dispatch({ 
+                type: 'TOGGLE_TODO', 
+                payload: todo.id 
+              })}
+            />
+            {todo.text}
+            &lt;button onClick={() => dispatch({
+              type: 'REMOVE_TODO',
+              payload: todo.id
+            })}>
+              Eliminar
+            &lt;/button>
+          &lt;/li>
+        ))}
+      &lt;/ul>
+    &lt;/div>
+  );
+}
+      </pre>
+    </div>
+  </div>
+
+  <script>
+    // -----------------------------------------------------
+    // Implementación del patrón Reducer para manejo de estado
+    // -----------------------------------------------------
+    
+    // Estado inicial de la aplicación
+    const initialState = {
+      counter: 0,
+      todos: [
+        { id: 1, text: 'Aprender JavaScript', completed: true },
+        { id: 2, text: 'Entender el patrón Reducer', completed: false },
+        { id: 3, text: 'Practicar con React', completed: false }
+      ]
+    };
+    
+    // Definición de tipos de acciones
+    const ACTIONS = {
+      INCREMENT: 'INCREMENT',
+      DECREMENT: 'DECREMENT',
+      ADD_TODO: 'ADD_TODO',
+      TOGGLE_TODO: 'TOGGLE_TODO',
+      REMOVE_TODO: 'REMOVE_TODO'
+    };
+    
+    // Función Reducer: determina el nuevo estado basado en la acción
+    function reducer(state, action) {
+      switch (action.type) {
+        case ACTIONS.INCREMENT:
+          return {
+            ...state,
+            counter: state.counter + (action.payload || 1)
+          };
+          
+        case ACTIONS.DECREMENT:
+          return {
+            ...state,
+            counter: state.counter - (action.payload || 1)
+          };
+          
+        case ACTIONS.ADD_TODO:
+          if (!action.payload || action.payload.trim() === '') {
+            return state;
+          }
+          return {
+            ...state,
+            todos: [
+              ...state.todos,
+              {
+                id: Date.now(),
+                text: action.payload,
+                completed: false
+              }
+            ]
+          };
+          
+        case ACTIONS.TOGGLE_TODO:
+          return {
+            ...state,
+            todos: state.todos.map(todo => 
+              todo.id === action.payload 
+                ? { ...todo, completed: !todo.completed } 
+                : todo
+            )
+          };
+          
+        case ACTIONS.REMOVE_TODO:
+          return {
+            ...state,
+            todos: state.todos.filter(todo => todo.id !== action.payload)
+          };
+          
+        default:
+          return state;
+      }
+    }
+    
+    // -----------------------------------------------------
+    // Implementación de la Store con Time Travel (viaje en el tiempo)
+    // -----------------------------------------------------
+    
+    class Store {
+      constructor(reducer, initialState) {
+        this.reducer = reducer;
+        this.state = initialState;
+        this.listeners = [];
+        this.history = [{ state: initialState, action: { type: '@@INIT' } }];
+        this.currentIndex = 0;
+      }
+      
+      getState() {
+        return { ...this.state };
+      }
+      
+      dispatch(action) {
+        // Calcular nuevo estado
+        const newState = this.reducer(this.state, action);
+        
+        // Si el estado no cambió, no hacemos nada
+        if (newState === this.state) {
+          return action;
+        }
+        
+        // Actualizar estado
+        this.state = newState;
+        
+        // Guardar en historial (eliminando el futuro si estamos en un estado anterior)
+        if (this.currentIndex < this.history.length - 1) {
+          this.history = this.history.slice(0, this.currentIndex + 1);
+        }
+        
+        this.history.push({ state: newState, action });
+        this.currentIndex = this.history.length - 1;
+        
+        // Notificar a los suscriptores
+        this.notify();
+        
+        return action;
+      }
+      
+      subscribe(listener) {
+        this.listeners.push(listener);
+        
+        // Devolver función para cancelar suscripción
+        return () => {
+          this.listeners = this.listeners.filter(l => l !== listener);
+        };
+      }
+      
+      notify() {
+        this.listeners.forEach(listener => listener(this.state));
+      }
+      
+      // Funciones para viaje en el tiempo
+      goToState(index) {
+        if (index >= 0 && index < this.history.length) {
+          this.currentIndex = index;
+          this.state = this.history[index].state;
+          this.notify();
+        }
+      }
+      
+      goBack() {
+        this.goToState(this.currentIndex - 1);
+      }
+      
+      goForward() {
+        this.goToState(this.currentIndex + 1);
+      }
+      
+      getHistory() {
+        return this.history;
+      }
+      
+      getCurrentIndex() {
+        return this.currentIndex;
+      }
+    }
+    
+    // -----------------------------------------------------
+    // Inicialización y Vinculación de la UI
+    // -----------------------------------------------------
+    
+    // Crear store
+    const store = new Store(reducer, initialState);
+    
+    // Referencias de los elementos de la UI
+    const counterDisplay = document.getElementById('counter-display');
+    const decrementBtn = document.getElementById('decrement-btn');
+    const incrementBtn = document.getElementById('increment-btn');
+    const incrementByBtn = document.getElementById('increment-by-btn');
+    const todoInput = document.getElementById('todo-input');
+    const addTodoBtn = document.getElementById('add-todo-btn');
+    const todoList = document.getElementById('todo-list');
+    const stateJson = document.getElementById('state-json');
+    const actionJson = document.getElementById('action-json');
+    const historyLog = document.getElementById('history-log');
+    const timeTravelBtn = document.getElementById('time-travel-btn');
+    
+    // Función para renderizar la UI basada en el estado
+    function render(state) {
+      // Actualizar contador
+      counterDisplay.textContent = state.counter;
+      
+      // Actualizar lista de tareas
+      todoList.innerHTML = '';
+      
+      state.todos.forEach(todo => {
+        const li = document.createElement('li');
+        li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+        
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = todo.completed;
+        checkbox.addEventListener('change', () => {
+          store.dispatch({ type: ACTIONS.TOGGLE_TODO, payload: todo.id });
+        });
+        
+        const todoText = document.createElement('span');
+        todoText.className = 'todo-text';
+        todoText.textContent = todo.text;
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn-danger';
+        deleteBtn.textContent = 'Eliminar';
+        deleteBtn.addEventListener('click', () => {
+          store.dispatch({ type: ACTIONS.REMOVE_TODO, payload: todo.id });
+        });
+        
+        li.appendChild(checkbox);
+        li.appendChild(todoText);
+        li.appendChild(deleteBtn);
+        
+        todoList.appendChild(li);
+      });
+      
+      // Actualizar visualización del estado
+      stateJson.textContent = JSON.stringify(state, null, 2);
+      
+      // Actualizar historial
+      updateHistoryLog();
+    }
+    
+    // Función para actualizar el historial de acciones
+    function updateHistoryLog() {
+      const history = store.getHistory();
+      const currentIndex = store.getCurrentIndex();
+      
+      historyLog.innerHTML = '';
+      
+      history.forEach((entry, index) => {
+        const p = document.createElement('p');
+        p.style.cursor = 'pointer';
+        
+        if (index === currentIndex) {
+          p.style.fontWeight = 'bold';
+          p.style.borderLeft = '3px solid #2ecc71';
+          p.style.paddingLeft = '5px';
+        }
+        
+        p.textContent = `${index}: ${entry.action.type}`;
+        if (entry.action.payload !== undefined) {
+          p.textContent += ` → ${
+            typeof entry.action.payload === 'object' 
+              ? JSON.stringify(entry.action.payload) 
+              : entry.action.payload
+          }`;
+        }
+        
+        p.addEventListener('click', () => {
+          store.goToState(index);
+        });
+        
+        historyLog.appendChild(p);
+      });
+      
+      // Scroll al final del historial
+      historyLog.scrollTop = historyLog.scrollHeight;
+    }
+    
+    // Suscribirse a cambios en el estado
+    store.subscribe(render);
+    
+    // Inicializar UI
+    render(store.getState());
+    
+    // Vincular eventos
+    decrementBtn.addEventListener('click', () => {
+      const action = { type: ACTIONS.DECREMENT };
+      store.dispatch(action);
+      actionJson.textContent = JSON.stringify(action, null, 2);
+    });
+    
+    incrementBtn.addEventListener('click', () => {
+      const action = { type: ACTIONS.INCREMENT };
+      store.dispatch(action);
+      actionJson.textContent = JSON.stringify(action, null, 2);
+    });
+    
+    incrementByBtn.addEventListener('click', () => {
+      const action = { type: ACTIONS.INCREMENT, payload: 5 };
+      store.dispatch(action);
+      actionJson.textContent = JSON.stringify(action, null, 2);
+    });
+    
+    addTodoBtn.addEventListener('click', () => {
+      const text = todoInput.value.trim();
+      if (text) {
+        const action = { type: ACTIONS.ADD_TODO, payload: text };
+        store.dispatch(action);
+        actionJson.textContent = JSON.stringify(action, null, 2);
+        todoInput.value = '';
+      }
+    });
+    
+    todoInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const text = todoInput.value.trim();
+        if (text) {
+          const action = { type: ACTIONS.ADD_TODO, payload: text };
+          store.dispatch(action);
+          actionJson.textContent = JSON.stringify(action, null, 2);
+          todoInput.value = '';
+        }
+      }
+    });
+    
+    // Alternar entre modo viaje en el tiempo
+    let timeTravelMode = false;
+    
+    timeTravelBtn.addEventListener('click', () => {
+      timeTravelMode = !timeTravelMode;
+      
+      if (timeTravelMode) {
+        timeTravelBtn.textContent = 'Salir del Modo Viaje';
+        timeTravelBtn.classList.add('btn-danger');
+        timeTravelBtn.classList.remove('btn-success');
+      } else {
+        timeTravelBtn.textContent = 'Viajar en el Tiempo';
+        timeTravelBtn.classList.add('btn-success');
+        timeTravelBtn.classList.remove('btn-danger');
+        
+        // Volver al estado actual
+        store.goToState(store.getHistory().length - 1);
+      }
+    });
+  </script>
+</body>
+</html> 
